@@ -1,0 +1,36 @@
+---
+import { siteName } from "@/constants";
+
+type Props = {
+  /**
+   * Optional page title.
+   *
+   * If included, the page title will be set to `{title} | {siteName}`; otherwise, the
+   * title will just be `{siteName}`.
+   */
+  title?: string;
+};
+
+const { title } = Astro.props;
+const titlePrefix = title ? `${title} | ` : "";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content="Glaze gallery." />
+    <title>{titlePrefix + siteName}</title>
+  </head>
+  <body class="p-6">
+    <slot />
+  </body>
+</html>
+
+<style is:global>
+  html {
+    font-family: "Inter Variable", sans-serif;
+  }
+</style>
