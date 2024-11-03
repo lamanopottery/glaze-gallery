@@ -65,9 +65,6 @@ class GoogleDrive:
     def _glaze_gallery_last_synced_cell(self) -> str:
         return os.environ["GLAZE_GALLERY_LAST_SYNCED_CELL"]
 
-    def _fmt_glaze(self, glaze: str) -> str:
-        return "".join(glaze.split()).lower()
-
     def get_glaze_data(self) -> pd.DataFrame:
         request: HttpRequest = self._spreadsheets.values().get(
             spreadsheetId=self._glaze_gallery_spreadsheet_id,
@@ -77,7 +74,9 @@ class GoogleDrive:
         values = response["values"]
         # Include the header row in the data to ensure that the first row has the right
         # number of columns, even if some cells at the end are empty. Then select it out.
-        return pd.DataFrame(data=values, columns=values[0]).iloc[1:]
+        # None values can occur when the row is empty at the end. For consistency, we
+        # replace them with empty strings.
+        return pd.DataFrame(data=values, columns=values[0]).iloc[1:].fillna(value="")
 
     def update_last_synced_cell(self, *, never=True) -> None:
         if never:
@@ -100,17 +99,15 @@ class GoogleDrive:
     def download_glaze_image(
         self,
         file_id: str,
-        download_dir: str,
-        mime_type: str,
-        glaze1: str,
-        glaze2: str,
+        glaze_dir: str,
+        glaze_combo: str,
         side: str,
+        mime_type: str,
     ):
+
+        os.makedirs(glaze_dir, exist_ok=True)
         extension = mimetypes.guess_extension(mime_type)
-        file_name = os.path.join(
-            download_dir,
-            f"{self._fmt_glaze(glaze1)}-{self._fmt_glaze(glaze2)}-{side}{extension}",
-        )
+        file_name = os.path.join(glaze_dir, f"{glaze_combo}-{side}{extension}")
         request: HttpRequest = self._files.get_media(fileId=file_id)
         with open(file_name, "wb") as f:
             downloader = MediaIoBaseDownload(f, request)
