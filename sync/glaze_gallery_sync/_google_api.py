@@ -1,5 +1,5 @@
 import os
-import mimetypes
+import io
 from datetime import datetime
 import pytz
 import pandas as pd
@@ -8,6 +8,7 @@ from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import Resource, build
 from googleapiclient.http import HttpRequest, MediaIoBaseDownload
+from glaze_gallery_sync._image_processing import download_image
 
 _CREDENTIALS_PATH = "credentials.json"
 _TOKEN_PATH = "token.json"
@@ -102,15 +103,13 @@ class GoogleDrive:
         glaze_dir: str,
         glaze_combo: str,
         side: str,
-        mime_type: str,
     ):
-
         os.makedirs(glaze_dir, exist_ok=True)
-        extension = mimetypes.guess_extension(mime_type)
-        file_name = os.path.join(glaze_dir, f"{glaze_combo}-{side}{extension}")
+        file_path = os.path.join(glaze_dir, f"{glaze_combo}-{side}")
         request: HttpRequest = self._files.get_media(fileId=file_id)
-        with open(file_name, "wb") as f:
-            downloader = MediaIoBaseDownload(f, request)
-            done = False
-            while done is False:
-                status, done = downloader.next_chunk()
+        image_bytes = io.BytesIO()
+        downloader = MediaIoBaseDownload(image_bytes, request)
+        done = False
+        while done is False:
+            _, done = downloader.next_chunk()
+        download_image(image_bytes, file_path)

@@ -2,6 +2,7 @@ from typing import TypeVar, Any
 import os
 import shutil
 import json
+from tqdm import tqdm
 from dotenv import load_dotenv
 import pandas as pd
 from glaze_gallery_sync._google_api import GoogleDrive
@@ -47,16 +48,16 @@ def download() -> None:
     la_mano_glaze_combos = set()
     mud_matters_glazes = {}
     mud_matters_glaze_combos = set()
-    for i in range(len(filtered_glaze_data)):
+    for i in tqdm(range(len(filtered_glaze_data))):
         image_data = filtered_glaze_data.iloc[i]
         front_file_id = _get_value(image_data, "front_file_id", str)
         back_file_id = _get_value(image_data, "back_file_id", str, optional=True)
         glaze1 = _get_value(image_data, "glaze1", str)
         glaze2 = _get_value(image_data, "glaze2", str)
-        show_la_mano = _get_value(image_data, "show_la_mano", bool)
-        show_mud_matters = _get_value(image_data, "show_mud_matters", bool)
+        hide_la_mano = _get_value(image_data, "hide_la_mano", bool)
+        hide_mud_matters = _get_value(image_data, "hide_mud_matters", bool)
 
-        if not (show_la_mano or show_mud_matters):
+        if hide_la_mano and hide_mud_matters:
             continue
 
         glaze1_formatted = _format_glaze(glaze1)
@@ -69,7 +70,6 @@ def download() -> None:
             glaze_dir,
             glaze_combo,
             side="front",
-            mime_type=_get_value(image_data, "front_mime_type", str),
         )
         if back_file_id:
             google_drive.download_glaze_image(
@@ -77,7 +77,6 @@ def download() -> None:
                 glaze_dir,
                 glaze_combo,
                 side="back",
-                mime_type=_get_value(image_data, "back_mime_type", str),
             )
 
         glaze_combo_data = {
@@ -93,11 +92,11 @@ def download() -> None:
             sort_keys=False,
         )
 
-        if show_la_mano:
+        if not hide_la_mano:
             la_mano_glazes[glaze1_formatted] = glaze1
             la_mano_glazes[glaze2_formatted] = glaze2
             la_mano_glaze_combos.add(glaze_combo)
-        if show_mud_matters:
+        if not hide_mud_matters:
             mud_matters_glazes[glaze1_formatted] = glaze1
             mud_matters_glazes[glaze2_formatted] = glaze2
             mud_matters_glaze_combos.add(glaze_combo)
