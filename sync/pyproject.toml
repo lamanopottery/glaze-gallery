@@ -1,0 +1,22 @@
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "glaze-gallery-sync"
+version = "0.1.0"
+description = "Scripts for syncing data for the live glaze gallery websites."
+authors = ["Alex Hadley <contact@alexhadley.net>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+pytz = "^2024.2"
+pandas = "^2.2.3"
+google-api-python-client = "^2.151.0"
+google-auth-httplib2 = "^0.2.0"
+google-auth-oauthlib = "^1.2.1"
+python-dotenv = "^1.0.1"
+
+[tool.poetry.scripts]
+glaze_gallery_download = 'glaze_gallery_sync._download:download'

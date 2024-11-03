@@ -1,6 +1,9 @@
 # Misc
 .DS_Store
 
+# Dotenv
+.env
+
 # VS Code
 .vscode/
 
@@ -11,3 +14,10 @@ node_modules/
 # Astro
 .astro/
 dist/
+
+# Python
+__pycache__/
+
+# Google API
+credentials.json
+token.json
