@@ -21,3 +21,6 @@ __pycache__/
 # Google API
 credentials.json
 token.json
+
+# Downloads
+downloads/

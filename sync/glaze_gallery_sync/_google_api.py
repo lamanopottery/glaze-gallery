@@ -65,7 +65,7 @@ class GoogleDrive:
     def _glaze_gallery_last_synced_cell(self) -> str:
         return os.environ["GLAZE_GALLERY_LAST_SYNCED_CELL"]
 
-    def _format_glaze(self, glaze: str) -> str:
+    def _fmt_glaze(self, glaze: str) -> str:
         return "".join(glaze.split()).lower()
 
     def get_glaze_data(self) -> pd.DataFrame:
@@ -98,11 +98,18 @@ class GoogleDrive:
         request.execute()
 
     def download_glaze_image(
-        self, file_id: str, mime_type: str, glaze1: str, glaze2: str
+        self,
+        file_id: str,
+        download_dir: str,
+        mime_type: str,
+        glaze1: str,
+        glaze2: str,
+        side: str,
     ):
         extension = mimetypes.guess_extension(mime_type)
-        file_name = (
-            f"{self._format_glaze(glaze1)}-{self._format_glaze(glaze2)}{extension}"
+        file_name = os.path.join(
+            download_dir,
+            f"{self._fmt_glaze(glaze1)}-{self._fmt_glaze(glaze2)}-{side}{extension}",
         )
         request: HttpRequest = self._files.get_media(fileId=file_id)
         with open(file_name, "wb") as f:
