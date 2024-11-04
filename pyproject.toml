@@ -3,7 +3,7 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
-name = "glaze-gallery-sync"
+name = "glaze-gallery"
 version = "0.1.0"
 description = "Scripts for syncing data for the live glaze gallery websites."
 authors = ["Alex Hadley <contact@alexhadley.net>"]
@@ -20,5 +20,5 @@ google-auth-httplib2 = "^0.2.0"
 google-auth-oauthlib = "^1.2.1"
 tqdm = "^4.66.6"
 
-[tool.poetry.scripts]
-glaze_gallery_download = 'glaze_gallery_sync._download:download'
+[tool.poe.tasks]
+download.script = "glaze_gallery._download:download"

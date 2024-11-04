@@ -1,0 +1,35 @@
+---
+import Base from "@/layouts/Base.astro";
+const { GLAZE_GALLERY_STUDIO_EMAIL } = import.meta.env;
+---
+
+<Base title="Login">
+  <div class="flex flex-col gap-5">
+    <p class="self-center">
+      If you do not have the password, please contact
+      <a href={`mailto:${GLAZE_GALLERY_STUDIO_EMAIL}`} target="_blank">
+        {GLAZE_GALLERY_STUDIO_EMAIL}</a
+      >.
+    </p>
+    <div class="flex items-center justify-center">
+      <form
+        method="POST"
+        class="flex max-w-md grow flex-col gap-5 rounded-lg bg-stone-200 p-5"
+      >
+        <div class="flex flex-col gap-1">
+          <label for="password">Password</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            class="rounded-lg px-3 py-1.5"
+            size={10}
+          />
+        </div>
+        <button class="rounded-lg bg-stone-300 py-1.5 hover:brightness-90">
+          Log in
+        </button>
+      </form>
+    </div>
+  </div>
+</Base>

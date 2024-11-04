@@ -5,7 +5,7 @@ import json
 from tqdm import tqdm
 from dotenv import load_dotenv
 import pandas as pd
-from glaze_gallery_sync._google_api import GoogleDrive
+from glaze_gallery._google_api import GoogleDrive
 
 _DOWNLOADS_DIR = "downloads"
 
@@ -41,7 +41,8 @@ def download() -> None:
     load_dotenv()
     google_drive = GoogleDrive()
     glaze_data = google_drive.get_glaze_data()
-    shutil.rmtree(_DOWNLOADS_DIR)
+    if os.path.isdir(_DOWNLOADS_DIR):
+        shutil.rmtree(_DOWNLOADS_DIR)
     os.mkdir(_DOWNLOADS_DIR)
     filtered_glaze_data = glaze_data[glaze_data["front_image"].astype(bool)]
     la_mano_glazes = {}

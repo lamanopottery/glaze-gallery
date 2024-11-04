@@ -8,7 +8,7 @@ from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import Resource, build
 from googleapiclient.http import HttpRequest, MediaIoBaseDownload
-from glaze_gallery_sync._image_processing import download_image
+from glaze_gallery._image_processing import download_image
 
 _CREDENTIALS_PATH = "credentials.json"
 _TOKEN_PATH = "token.json"
