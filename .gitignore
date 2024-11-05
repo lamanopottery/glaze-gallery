@@ -18,6 +18,9 @@ dist/
 # Python
 __pycache__/
 
+# Cloudflare
+.wrangler/
+
 # Google API
 credentials.json
 token.json
