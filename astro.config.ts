@@ -9,10 +9,10 @@ export default defineConfig({
   vite: {
     define: {
       "import.meta.env.GLAZE_GALLERY_STUDIO": JSON.stringify(
-        import.meta.env.GLAZE_GALLERY_STUDIO,
+        process.env.GLAZE_GALLERY_STUDIO,
       ),
       "import.meta.env.GLAZE_GALLERY_STUDIO_EMAIL": JSON.stringify(
-        import.meta.env.GLAZE_GALLERY_STUDIO_EMAIL,
+        process.env.GLAZE_GALLERY_STUDIO_EMAIL,
       ),
     },
   },
