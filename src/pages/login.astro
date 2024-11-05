@@ -1,7 +1,20 @@
 ---
 import Base from "@/layouts/Base.astro";
 const { env } = Astro.locals.runtime;
-const { GLAZE_GALLERY_STUDIO_EMAIL } = env;
+const { GLAZE_GALLERY_STUDIO_EMAIL, GLAZE_GALLERY_PASSWORD } = env;
+
+let status: string | null = null;
+if (Astro.request.method === "POST") {
+  try {
+    const data = await Astro.request.formData();
+    const password = data.get("password");
+    status = password === GLAZE_GALLERY_PASSWORD ? "correct" : "incorrect";
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error(error.message);
+    }
+  }
+}
 ---
 
 <Base title="Login">
@@ -27,6 +40,7 @@ const { GLAZE_GALLERY_STUDIO_EMAIL } = env;
             size={10}
           />
         </div>
+        {status && <p>Password was {status}</p>}
         <button class="rounded-lg bg-stone-300 py-1.5 hover:brightness-90">
           Log in
         </button>
