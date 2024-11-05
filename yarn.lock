@@ -2877,6 +2877,7 @@ __metadata:
     prettier-plugin-tailwindcss: "npm:^0.6.8"
     tailwindcss: "npm:^3.4.14"
     typescript: "npm:^5.6.3"
+    wrangler: "npm:^3.84.1"
   languageName: unknown
   linkType: soft
 
@@ -6423,7 +6424,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"wrangler@npm:^3.82.0":
+"wrangler@npm:^3.82.0, wrangler@npm:^3.84.1":
   version: 3.84.1
   resolution: "wrangler@npm:3.84.1"
   dependencies:

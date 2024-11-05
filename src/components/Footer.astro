@@ -1,4 +1,9 @@
+---
+const { env } = Astro.locals.runtime;
+const { GLAZE_GALLERY_STUDIO } = env;
+---
+
 <footer class="pb-5 text-center text-lg">
   &copy; {new Date().getFullYear()}
-  {import.meta.env.GLAZE_GALLERY_STUDIO}
+  {GLAZE_GALLERY_STUDIO}
 </footer>

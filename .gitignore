@@ -20,6 +20,8 @@ __pycache__/
 
 # Cloudflare
 .wrangler/
+wrangler.toml
+worker-configuration.d.ts
 
 # Google API
 credentials.json
