@@ -6,12 +6,16 @@ const { GLAZE_GALLERY_STUDIO_EMAIL } = Astro.locals.runtime.env;
 
 const postRequest = Astro.request.method === "POST";
 if (postRequest) {
-  const data = await Astro.request.formData();
-  const password = data.get("password");
-  logIn(Astro, password);
+  try {
+    const data = await Astro.request.formData();
+    const password = data.get("password");
+    if (typeof password === "string") {
+      await logIn(Astro, password);
+    }
+  } catch {}
 }
 
-if (isLoggedIn(Astro)) {
+if (await isLoggedIn(Astro)) {
   return Astro.redirect("/");
 }
 ---

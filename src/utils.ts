@@ -1,5 +1,5 @@
 import type { AstroGlobal, AstroCookieSetOptions } from "astro";
-import jwt from "jsonwebtoken";
+import { SignJWT, jwtVerify } from "jose";
 
 const cookieOptions = {
   httpOnly: true,
@@ -7,40 +7,36 @@ const cookieOptions = {
   secure: true,
 } satisfies AstroCookieSetOptions;
 
-export function logIn(Astro: AstroGlobal, password: FormDataEntryValue | null) {
-  if (typeof password !== "string") return;
+const alg = "HS256";
 
+export async function logIn(Astro: AstroGlobal, password: string) {
   const { GLAZE_GALLERY_PASSWORD, GLAZE_GALLERY_JWT_SECRET } = Astro.locals.runtime.env;
 
   if (password === GLAZE_GALLERY_PASSWORD) {
-    const loginToken = jwt.sign({ loggedIn: true }, GLAZE_GALLERY_JWT_SECRET, {
-      expiresIn: "10s",
-    });
+    const secret = new TextEncoder().encode(GLAZE_GALLERY_JWT_SECRET);
+    const loginToken = await new SignJWT({ loggedIn: true })
+      .setProtectedHeader({ alg })
+      .setExpirationTime("1h")
+      .sign(secret);
     Astro.cookies.set("login-token", loginToken, cookieOptions);
   }
 }
 
-export function loginInfo(Astro: AstroGlobal) {
+export async function loginInfo(Astro: AstroGlobal) {
   const { GLAZE_GALLERY_JWT_SECRET } = Astro.locals.runtime.env;
 
   const loginToken = Astro.cookies.get("login-token")?.value;
   if (loginToken) {
-    const loginInfo = jwt.verify(loginToken, GLAZE_GALLERY_JWT_SECRET);
-    return loginInfo;
-  }
-  return "none";
-}
-
-export function isLoggedIn(Astro: AstroGlobal) {
-  const { GLAZE_GALLERY_JWT_SECRET } = Astro.locals.runtime.env;
-
-  const loginToken = Astro.cookies.get("login-token")?.value;
-  if (loginToken) {
+    const secret = new TextEncoder().encode(GLAZE_GALLERY_JWT_SECRET);
     try {
-      const loginInfo = jwt.verify(loginToken, GLAZE_GALLERY_JWT_SECRET);
-      return typeof loginInfo !== "string" && loginInfo.loggedIn == true;
+      return await jwtVerify(loginToken, secret);
     } catch {}
   }
 
-  return false;
+  return null;
+}
+
+export async function isLoggedIn(Astro: AstroGlobal) {
+  const data = await loginInfo(Astro);
+  return data?.payload.loggedIn === true;
 }

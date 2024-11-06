@@ -2,14 +2,16 @@
 import { isLoggedIn, loginInfo } from "@/utils";
 import Base from "@/layouts/Base.astro";
 
-if (!isLoggedIn(Astro)) {
+if (!(await isLoggedIn(Astro))) {
   return Astro.redirect("/login");
 }
+
+const data = await loginInfo(Astro);
 ---
 
 <Base>
   <pre>
-    {JSON.stringify(loginInfo(Astro))}
+    {JSON.stringify(data)}
   </pre>
   <div class="text-center text-lg">
     <p>You're logged in!</p>
