@@ -4,7 +4,6 @@ import Base from "@/layouts/Base.astro";
 
 const { GLAZE_GALLERY_STUDIO_EMAIL } = Astro.locals.runtime.env;
 
-let error = null;
 const postRequest = Astro.request.method === "POST";
 if (postRequest) {
   try {
@@ -13,9 +12,7 @@ if (postRequest) {
     if (typeof password === "string") {
       await logIn(Astro, password);
     }
-  } catch (err) {
-    error = err;
-  }
+  } catch {}
 }
 
 if (await isLoggedIn(Astro)) {
@@ -24,9 +21,6 @@ if (await isLoggedIn(Astro)) {
 ---
 
 <Base title="Login">
-  <pre>
-    {error}
-  </pre>
   <div class="flex flex-col gap-5">
     <p class="self-center">
       If you do not have the password, please contact
