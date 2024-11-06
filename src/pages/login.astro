@@ -1,19 +1,18 @@
 ---
+import { logIn, isLoggedIn } from "@/utils";
 import Base from "@/layouts/Base.astro";
-const { env } = Astro.locals.runtime;
-const { GLAZE_GALLERY_STUDIO_EMAIL, GLAZE_GALLERY_PASSWORD } = env;
 
-let status: string | null = null;
-if (Astro.request.method === "POST") {
-  try {
-    const data = await Astro.request.formData();
-    const password = data.get("password");
-    status = password === GLAZE_GALLERY_PASSWORD ? "correct" : "incorrect";
-  } catch (error) {
-    if (error instanceof Error) {
-      console.error(error.message);
-    }
-  }
+const { GLAZE_GALLERY_STUDIO_EMAIL } = Astro.locals.runtime.env;
+
+const postRequest = Astro.request.method === "POST";
+if (postRequest) {
+  const data = await Astro.request.formData();
+  const password = data.get("password");
+  logIn(Astro, password);
+}
+
+if (isLoggedIn(Astro)) {
+  return Astro.redirect("/");
 }
 ---
 
@@ -39,8 +38,8 @@ if (Astro.request.method === "POST") {
             class="rounded-lg px-3 py-1.5"
             size={10}
           />
+          {postRequest && <p class="mt-1 text-red-600">Incorrect password</p>}
         </div>
-        {status && <p>Password was {status}</p>}
         <button class="rounded-lg bg-stone-300 py-1.5 hover:brightness-90">
           Log in
         </button>

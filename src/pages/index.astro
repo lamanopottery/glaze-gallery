@@ -1,11 +1,18 @@
 ---
+import { isLoggedIn, loginInfo } from "@/utils";
 import Base from "@/layouts/Base.astro";
 
-return Astro.redirect("/login");
+if (!isLoggedIn(Astro)) {
+  return Astro.redirect("/login");
+}
 ---
 
 <Base>
-  <div class="text-lg">
+  <pre>
+    {JSON.stringify(loginInfo(Astro))}
+  </pre>
+  <div class="text-center text-lg">
+    <p>You're logged in!</p>
     <p>Website under construction.</p>
   </div>
 </Base>
