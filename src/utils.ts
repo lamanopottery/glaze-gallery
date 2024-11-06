@@ -22,21 +22,17 @@ export async function logIn(Astro: AstroGlobal, password: string) {
   }
 }
 
-export async function loginInfo(Astro: AstroGlobal) {
+export async function isLoggedIn(Astro: AstroGlobal) {
   const { GLAZE_GALLERY_JWT_SECRET } = Astro.locals.runtime.env;
 
   const loginToken = Astro.cookies.get("login-token")?.value;
   if (loginToken) {
     const secret = new TextEncoder().encode(GLAZE_GALLERY_JWT_SECRET);
     try {
-      return await jwtVerify(loginToken, secret);
+      const { payload } = await jwtVerify(loginToken, secret);
+      return payload.loggedIn === true;
     } catch {}
   }
 
-  return null;
-}
-
-export async function isLoggedIn(Astro: AstroGlobal) {
-  const data = await loginInfo(Astro);
-  return data?.payload.loggedIn === true;
+  return false;
 }
