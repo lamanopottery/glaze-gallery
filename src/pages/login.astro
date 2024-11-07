@@ -16,7 +16,9 @@ if (postRequest) {
 }
 
 if (await isLoggedIn(Astro)) {
-  return Astro.redirect("/");
+  const destParam = Astro.url.searchParams.get("dest");
+  const dest = destParam ? decodeURIComponent(destParam) : "";
+  return Astro.redirect(`/${dest}`);
 }
 ---
 

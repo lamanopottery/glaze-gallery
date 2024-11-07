@@ -36,3 +36,8 @@ export async function isLoggedIn(Astro: AstroGlobal) {
 
   return false;
 }
+
+export function redirectToLogin(Astro: AstroGlobal) {
+  const dest = encodeURIComponent(Astro.url.pathname.slice(1));
+  return Astro.redirect(`/login?dest=${dest}`);
+}
