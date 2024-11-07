@@ -5,9 +5,17 @@ import Base from "@/layouts/Base.astro";
 if (!(await isLoggedIn(Astro))) {
   return redirectToLogin(Astro);
 }
+
+const { GLAZE_GALLERY_BUCKET } = Astro.locals.runtime.env;
+
+const file = await GLAZE_GALLERY_BUCKET.get("la-mano-glazes.json");
+const laManoGlazes = await file?.json();
 ---
 
 <Base>
+  <pre>
+    {JSON.stringify(laManoGlazes)}
+  </pre>
   <div class="text-center text-lg">
     <p>You're logged in!</p>
     <p>Website under construction.</p>
