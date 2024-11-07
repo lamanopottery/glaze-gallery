@@ -26,5 +26,5 @@ if (file) {
   });
 }
 
-Astro.response.status = 404;
+return new Response(null, { status: 404 });
 ---
