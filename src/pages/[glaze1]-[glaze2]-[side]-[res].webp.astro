@@ -12,10 +12,19 @@ const file = await GLAZE_GALLERY_BUCKET.get(
   `${glaze1}-${glaze2}/${glaze1}-${glaze2}-${side}-${res}.webp`,
 );
 
-if (file) {
-  const contentType = file.httpMetadata?.contentType ?? "image/webp";
-  return new Response(file.body, { headers: { "Content-Type": contentType } });
+if (Astro.request.headers.get("If-None-Match") === file?.httpEtag) {
+  return new Response(null, { status: 304 });
 }
 
-return new Response(null, { status: 404 });
+if (file) {
+  const contentType = file.httpMetadata?.contentType ?? "image/webp";
+  return new Response(file.body, {
+    headers: {
+      "Content-Type": contentType,
+      ETag: file.httpEtag,
+    },
+  });
+}
+
+Astro.response.status = 404;
 ---
