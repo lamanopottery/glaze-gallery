@@ -1,0 +1,23 @@
+---
+import type { Glazes } from "@/types";
+
+interface Props {
+  name: string;
+  label: string;
+  glazes: Glazes;
+}
+
+const { name, label, glazes } = Astro.props;
+---
+
+<div class="flex items-center gap-2">
+  <label for={name}>{label}</label>
+  <select name={name} id={name} class="rounded-lg bg-stone-200 px-3 py-1.5">
+    <option value="any">Any</option>
+    {
+      Object.entries(glazes).map(([glaze, glazeName]) => (
+        <option value={glaze}>{glazeName}</option>
+      ))
+    }
+  </select>
+</div>

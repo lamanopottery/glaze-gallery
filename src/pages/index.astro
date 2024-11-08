@@ -1,23 +1,38 @@
 ---
+import type { Glazes } from "@/types";
 import { isLoggedIn, redirectToLogin } from "@/utils";
 import Base from "@/layouts/Base.astro";
+import GlazeSelect from "@/components/GlazeSelect.astro";
 
 if (!(await isLoggedIn(Astro))) {
   return redirectToLogin(Astro);
 }
 
-const { GLAZE_GALLERY_BUCKET } = Astro.locals.runtime.env;
+const { GLAZE_GALLERY_BUCKET, GLAZE_GALLERY_GLAZES_FILE } = Astro.locals.runtime.env;
 
-const file = await GLAZE_GALLERY_BUCKET.get("la-mano-glazes.json");
-const laManoGlazes = await file?.json();
+const file = await GLAZE_GALLERY_BUCKET.get(GLAZE_GALLERY_GLAZES_FILE);
+const glazes: Glazes = (await file?.json()) ?? {};
 ---
 
 <Base>
-  <pre>
-    {JSON.stringify(laManoGlazes)}
-  </pre>
-  <div class="text-center text-lg">
-    <p>You're logged in!</p>
-    <p>Website under construction.</p>
+  <div class="flex max-w-3xl flex-col gap-3 self-center text-base">
+    <p>
+      Glazes can be filtered by first and second dip. Captions are in the format
+      &ldquo;1st dip (under) \ 2nd dip (over)&rdquo;. Icons indicate if the glaze
+      combination is not food save (X), runny (X), or if the combination may blister,
+      jump, or crawl (X). Click images for a larger picture and additional notes.
+    </p>
+    <p>
+      <strong>Disclaimer:</strong> results will vary based on the thickness of the glaze and
+      the clay, the structure of the piece, how the piece is dipped, etc.
+    </p>
+  </div>
+  <div class="flex justify-center">
+    <hr class="max-w-3xl grow border-stone-300" />
+  </div>
+  <div class="flex flex-col items-center justify-center gap-3 sm:flex-row">
+    <GlazeSelect name="glaze1" label="1st dip (under):" glazes={glazes} />
+    <div class="hidden sm:block">\</div>
+    <GlazeSelect name="glaze2" label="2nd dip (over):" glazes={glazes} />
   </div>
 </Base>
