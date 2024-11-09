@@ -1,40 +1,85 @@
-import type { AstroGlobal, AstroCookieSetOptions } from "astro";
+import type { AstroGlobal } from "astro";
+import type { JWTPayload } from "jose";
 import { SignJWT, jwtVerify } from "jose";
 
-const cookieOptions = {
-  httpOnly: true,
-  sameSite: "strict",
-  secure: true,
-} satisfies AstroCookieSetOptions;
+const LOGIN_TOKEN_EXPIRATION_SECONDS = 60 * 30; // 30 minutes
+const REFRESH_TOKEN_EXPIRATION_SECONDS = 60 * 60 * 24 * 7; // 7 days
 
-const alg = "HS256";
+function getSecret(Astro: AstroGlobal) {
+  const { GLAZE_GALLERY_JWT_SECRET } = Astro.locals.runtime.env;
+  return new TextEncoder().encode(GLAZE_GALLERY_JWT_SECRET);
+}
+
+async function saveToken(
+  Astro: AstroGlobal,
+  name: string,
+  payload: JWTPayload,
+  expirationSeconds: number,
+) {
+  const expirationDate = new Date();
+  expirationDate.setTime(expirationDate.getTime() + expirationSeconds * 1000);
+
+  const token = await new SignJWT(payload)
+    .setProtectedHeader({ alg: "HS256" })
+    .setExpirationTime(expirationDate)
+    .sign(getSecret(Astro));
+
+  Astro.cookies.set(name, token, {
+    expires: expirationDate,
+    httpOnly: true,
+    sameSite: "strict",
+    secure: true,
+  });
+}
+
+async function refreshTokens(Astro: AstroGlobal) {
+  console.log("REFRESHING");
+  await saveToken(
+    Astro,
+    "login-token",
+    { loggedIn: true },
+    LOGIN_TOKEN_EXPIRATION_SECONDS,
+  );
+  await saveToken(
+    Astro,
+    "refresh-token",
+    { refresh: true },
+    REFRESH_TOKEN_EXPIRATION_SECONDS,
+  );
+}
+
+async function getPayload(Astro: AstroGlobal, name: string) {
+  const loginToken = Astro.cookies.get(name)?.value;
+  if (loginToken) {
+    try {
+      const { payload } = await jwtVerify(loginToken, getSecret(Astro));
+      return payload;
+    } catch {}
+  }
+
+  return null;
+}
 
 export async function logIn(Astro: AstroGlobal, password: string) {
-  const { GLAZE_GALLERY_PASSWORD, GLAZE_GALLERY_JWT_SECRET } = Astro.locals.runtime.env;
+  const { GLAZE_GALLERY_PASSWORD } = Astro.locals.runtime.env;
 
   if (password === GLAZE_GALLERY_PASSWORD) {
-    const secret = new TextEncoder().encode(GLAZE_GALLERY_JWT_SECRET);
-    const loginToken = await new SignJWT({ loggedIn: true })
-      .setProtectedHeader({ alg })
-      .setExpirationTime("1h")
-      .sign(secret);
-    Astro.cookies.set("login-token", loginToken, cookieOptions);
+    await refreshTokens(Astro);
   }
 }
 
 export async function isLoggedIn(Astro: AstroGlobal) {
-  const { GLAZE_GALLERY_JWT_SECRET } = Astro.locals.runtime.env;
-
-  const loginToken = Astro.cookies.get("login-token")?.value;
-  if (loginToken) {
-    const secret = new TextEncoder().encode(GLAZE_GALLERY_JWT_SECRET);
-    try {
-      const { payload } = await jwtVerify(loginToken, secret);
-      return payload.loggedIn === true;
-    } catch {}
+  const loginPayload = await getPayload(Astro, "login-token");
+  if (loginPayload !== null && loginPayload.loggedIn === true) {
+    return true;
   }
 
-  return false;
+  const refreshPayload = await getPayload(Astro, "refresh-token");
+  if (refreshPayload !== null && refreshPayload.refresh === true) {
+    await refreshTokens(Astro);
+    const loginPayload = await getPayload(Astro, "login-token");
+    return loginPayload !== null && loginPayload.loggedIn === true;
+  }
 }
 
 export function redirectToLogin(Astro: AstroGlobal) {
