@@ -100,16 +100,20 @@ class GoogleDrive:
     def download_glaze_image(
         self,
         file_id: str,
-        glaze_dir: str,
+        hide_la_mano: bool,
+        hide_mud_matters: bool,
         glaze_combo: str,
         side: str,
     ):
-        os.makedirs(glaze_dir, exist_ok=True)
-        file_path = os.path.join(glaze_dir, f"{glaze_combo}-{side}")
         request: HttpRequest = self._files.get_media(fileId=file_id)
         image_bytes = io.BytesIO()
         downloader = MediaIoBaseDownload(image_bytes, request)
         done = False
         while done is False:
             _, done = downloader.next_chunk()
-        download_image(image_bytes, file_path)
+        download_image(
+            image_bytes,
+            hide_la_mano,
+            hide_mud_matters,
+            file_name_base=f"{glaze_combo}-{side}",
+        )

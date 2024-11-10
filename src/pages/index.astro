@@ -8,14 +8,14 @@ if (!(await isLoggedIn(Astro))) {
   return redirectToLogin(Astro);
 }
 
-const { GLAZE_GALLERY_BUCKET, GLAZE_GALLERY_GLAZES_FILE } = Astro.locals.runtime.env;
+const { GLAZE_GALLERY_BUCKET, GLAZE_GALLERY_STUDIO_DIR } = Astro.locals.runtime.env;
 
-const file = await GLAZE_GALLERY_BUCKET.get(GLAZE_GALLERY_GLAZES_FILE);
+const file = await GLAZE_GALLERY_BUCKET.get(`${GLAZE_GALLERY_STUDIO_DIR}/glazes.json`);
 const glazes: Glazes = (await file?.json()) ?? {};
 ---
 
 <Base>
-  <div class="flex max-w-3xl flex-col gap-3 self-center text-base">
+  <div class="flex max-w-4xl flex-col gap-3 self-center text-base">
     <p>
       Glazes can be filtered by first and second dip. Captions are in the format
       &ldquo;1st dip (under) \ 2nd dip (over)&rdquo;. Icons indicate if the glaze
@@ -28,11 +28,11 @@ const glazes: Glazes = (await file?.json()) ?? {};
     </p>
   </div>
   <div class="flex justify-center">
-    <hr class="max-w-3xl grow border-stone-300" />
+    <hr class="max-w-4xl grow border-stone-300" />
   </div>
-  <div class="flex flex-col items-center justify-center gap-3 sm:flex-row">
+  <div class="flex flex-col items-center justify-center gap-3 lg:flex-row">
     <GlazeSelect name="glaze1" label="1st dip (under):" glazes={glazes} />
-    <div class="hidden sm:block">\</div>
+    <div class="hidden lg:block">\</div>
     <GlazeSelect name="glaze2" label="2nd dip (over):" glazes={glazes} />
   </div>
 </Base>

@@ -5,11 +5,11 @@ if (!(await isLoggedIn(Astro))) {
   return redirectToLogin(Astro);
 }
 
-const { GLAZE_GALLERY_BUCKET } = Astro.locals.runtime.env;
+const { GLAZE_GALLERY_BUCKET, GLAZE_GALLERY_STUDIO_DIR } = Astro.locals.runtime.env;
 const { glaze1, glaze2, side, res } = Astro.params;
 
 const file = await GLAZE_GALLERY_BUCKET.get(
-  `${glaze1}-${glaze2}/${glaze1}-${glaze2}-${side}-${res}.webp`,
+  `${GLAZE_GALLERY_STUDIO_DIR}/${glaze1}-${glaze2}-${side}-${res}.webp`,
 );
 
 if (Astro.request.headers.get("If-None-Match") === file?.httpEtag) {
