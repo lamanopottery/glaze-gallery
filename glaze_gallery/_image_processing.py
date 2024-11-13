@@ -1,28 +1,33 @@
-import os
 import io
+from pathlib import Path
 from PIL import Image
-from glaze_gallery._constants import LA_MANO_DIR, MUD_MATTERS_DIR
+from glaze_gallery._r2 import save_to_local_r2
 
 
-def download_image(
-    image_bytes: io.BytesIO,
-    hide_la_mano: bool,
-    hide_mud_matters: bool,
-    file_name_base: str,
-) -> None:
-    im = Image.open(image_bytes)
+class Images:
 
-    im_high = im.copy()
-    im_high.thumbnail((2000, 2000))
+    _HIGH_DIMS = (2000, 2000)
+    _LOW_DIMS = (700, 700)
 
-    im_low = im.copy()
-    im_low.thumbnail((700, 700))
+    def __init__(
+        self,
+        image_bytes: io.BytesIO,
+        file_name_base: str,
+    ) -> None:
+        self.im = Image.open(image_bytes)
 
-    if not hide_la_mano:
-        la_mano_file_path = os.path.join(LA_MANO_DIR, file_name_base)
-        im_high.save(f"{la_mano_file_path}-high.webp")
-        im_low.save(f"{la_mano_file_path}-low.webp")
-    if not hide_mud_matters:
-        mud_matters_file_path = os.path.join(MUD_MATTERS_DIR, file_name_base)
-        im_high.save(f"{mud_matters_file_path}-high.webp")
-        im_low.save(f"{mud_matters_file_path}-low.webp")
+        self.im_high = self.im.copy()
+        self.im_high.thumbnail(self._HIGH_DIMS)
+        self.file_name_high = f"{file_name_base}-high.webp"
+
+        self.im_low = self.im.copy()
+        self.im_low.thumbnail(self._LOW_DIMS)
+        self.file_name_low = f"{file_name_base}-low.webp"
+
+    def save(self, downloads_dir: Path, r2_dir: str) -> None:
+        file_path_high = downloads_dir / self.file_name_high
+        file_path_low = downloads_dir / self.file_name_low
+        self.im_high.save(file_path_high)
+        self.im_low.save(file_path_low)
+        save_to_local_r2(file_path_high, r2_path=f"{r2_dir}/{self.file_name_high}")
+        save_to_local_r2(file_path_high, r2_path=f"{r2_dir}/{self.file_name_low}")

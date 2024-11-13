@@ -1,5 +1,12 @@
-import os
+from pathlib import Path
 
-DOWNLOADS_DIR = "downloads"
-LA_MANO_DIR = os.path.join(DOWNLOADS_DIR, "la-mano")
-MUD_MATTERS_DIR = os.path.join(DOWNLOADS_DIR, "mud-matters")
+_LA_MANO_DIR = "la-mano"
+_MUD_MATTERS_DIR = "mud-matters"
+
+DOWNLOADS_DIR = Path("downloads")
+LA_MANO_DOWNLOADS_DIR = DOWNLOADS_DIR / _LA_MANO_DIR
+MUD_MATTERS_DOWNLOADS_DIR = DOWNLOADS_DIR / _MUD_MATTERS_DIR
+
+_LOCAL_R2_BUCKET = "glazegallery"
+LA_MANO_R2_DIR = f"{_LOCAL_R2_BUCKET}/{_LA_MANO_DIR}"
+MUD_MATTERS_R2_DIR = f"{_LOCAL_R2_BUCKET}/{_MUD_MATTERS_DIR}"
