@@ -81,12 +81,12 @@ class GlazeData:
         self.combo_info[combo.glaze_combo] = combo.info
 
         front_image_paths = front_images.save(self.downloads_dir)
-        self.images_high[combo.front_name_base] = front_image_paths.high.relative
-        self.images_low[combo.front_name_base] = front_image_paths.low.relative
+        self.images_high[combo.front_name_base] = front_image_paths.high.dir_name
+        self.images_low[combo.front_name_base] = front_image_paths.low.dir_name
         if back_images:
             back_image_paths = back_images.save(self.downloads_dir)
-            self.images_high[combo.back_name_base] = back_image_paths.high.relative
-            self.images_low[combo.back_name_base] = back_image_paths.low.relative
+            self.images_high[combo.back_name_base] = back_image_paths.high.dir_name
+            self.images_low[combo.back_name_base] = back_image_paths.low.dir_name
 
 
 def _get_value(

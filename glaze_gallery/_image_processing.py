@@ -12,10 +12,10 @@ class ImagePath:
     downloads_dir: InitVar[Path]
 
     def __post_init__(self, downloads_dir: Path) -> None:
-        dir_name = random_str()
-        (downloads_dir / dir_name).mkdir()
-        self.relative = os.path.join(dir_name, self.file_name)
-        self.full = downloads_dir / self.relative
+        self.dir_name = random_str()
+        dir_path = downloads_dir / self.dir_name
+        dir_path.mkdir()
+        self.path = dir_path / self.file_name
 
 
 @dataclass
@@ -51,6 +51,6 @@ class Images:
 
     def save(self, downloads_dir: Path) -> ImagePaths:
         image_paths = ImagePaths(self.file_name_high, self.file_name_low, downloads_dir)
-        self.im_high.save(image_paths.high.full)
-        self.im_low.save(image_paths.low.full)
+        self.im_high.save(image_paths.high.path)
+        self.im_low.save(image_paths.low.path)
         return image_paths
