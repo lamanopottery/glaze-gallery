@@ -109,7 +109,7 @@ def _get_value(
     raise TypeError(f"property '{name}' of '{image_name}' is {value!r}")
 
 
-def download() -> None:
+def download_images() -> None:
     load_dotenv()
     google_drive = GoogleDrive()
     glaze_data = google_drive.get_glaze_data()

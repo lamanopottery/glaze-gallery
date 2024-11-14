@@ -4,8 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "wrangler types && astro dev",
-    "build": "wrangler types && astro check && astro build",
+    "dev": "poetry run download_data && wrangler types && astro dev",
+    "build": "poetry run download_data && wrangler types && astro check && astro build",
     "preview": "wrangler pages dev ./dist",
     "lint": "wrangler types && astro check && prettier --check ."
   },

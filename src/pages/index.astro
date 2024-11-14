@@ -1,5 +1,4 @@
 ---
-import type { Glazes } from "@/types";
 import { isLoggedIn, redirectToLogin } from "@/utils";
 import Base from "@/layouts/Base.astro";
 import GlazeSelect from "@/components/GlazeSelect.astro";
@@ -7,11 +6,6 @@ import GlazeSelect from "@/components/GlazeSelect.astro";
 if (!(await isLoggedIn(Astro))) {
   return redirectToLogin(Astro);
 }
-
-const { GLAZE_GALLERY_BUCKET, GLAZE_GALLERY_STUDIO_DIR } = Astro.locals.runtime.env;
-
-const file = await GLAZE_GALLERY_BUCKET.get(`${GLAZE_GALLERY_STUDIO_DIR}/glazes.json`);
-const glazes: Glazes = (await file?.json()) ?? {};
 ---
 
 <Base>
@@ -31,8 +25,8 @@ const glazes: Glazes = (await file?.json()) ?? {};
     <hr class="max-w-4xl grow border-stone-300" />
   </div>
   <div class="flex flex-col items-center justify-center gap-3 lg:flex-row">
-    <GlazeSelect name="glaze1" label="1st dip (under):" glazes={glazes} />
+    <GlazeSelect name="glaze1" label="1st dip (under):" />
     <div class="hidden lg:block">\</div>
-    <GlazeSelect name="glaze2" label="2nd dip (over):" glazes={glazes} />
+    <GlazeSelect name="glaze2" label="2nd dip (over):" />
   </div>
 </Base>
