@@ -8,7 +8,7 @@ _DATA_DIR = Path("src", "data")
 
 
 def _download_file(relative_path: str, file_name: str) -> None:
-    r = requests.get(f"{os.environ["GLAZE_GALLERY_IMAGES_URL"]}/{relative_path}")
+    r = requests.get(f"{os.environ['GLAZE_GALLERY_IMAGES_URL']}/{relative_path}")
     with open(_DATA_DIR / file_name, "wb") as f:
         f.write(r.content)
 
