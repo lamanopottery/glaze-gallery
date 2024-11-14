@@ -1,7 +1,32 @@
+import os
 import io
 from pathlib import Path
+from dataclasses import dataclass, InitVar
 from PIL import Image
-from glaze_gallery._r2 import save_to_local_r2
+from glaze_gallery._random_dirs import random_str
+
+
+@dataclass
+class ImagePath:
+    file_name: str
+    downloads_dir: InitVar[Path]
+
+    def __post_init__(self, downloads_dir: Path) -> None:
+        dir_name = random_str()
+        (downloads_dir / dir_name).mkdir()
+        self.relative = os.path.join(dir_name, self.file_name)
+        self.full = downloads_dir / self.relative
+
+
+@dataclass
+class ImagePaths:
+    file_name_high: str
+    file_name_low: str
+    downloads_dir: InitVar[Path]
+
+    def __post_init__(self, downloads_dir: Path) -> None:
+        self.high = ImagePath(self.file_name_high, downloads_dir)
+        self.low = ImagePath(self.file_name_low, downloads_dir)
 
 
 class Images:
@@ -24,10 +49,8 @@ class Images:
         self.im_low.thumbnail(self._LOW_DIMS)
         self.file_name_low = f"{file_name_base}-low.webp"
 
-    def save(self, downloads_dir: Path, r2_dir: str) -> None:
-        file_path_high = downloads_dir / self.file_name_high
-        file_path_low = downloads_dir / self.file_name_low
-        self.im_high.save(file_path_high)
-        self.im_low.save(file_path_low)
-        save_to_local_r2(file_path_high, r2_path=f"{r2_dir}/{self.file_name_high}")
-        save_to_local_r2(file_path_high, r2_path=f"{r2_dir}/{self.file_name_low}")
+    def save(self, downloads_dir: Path) -> ImagePaths:
+        image_paths = ImagePaths(self.file_name_high, self.file_name_low, downloads_dir)
+        self.im_high.save(image_paths.high.full)
+        self.im_low.save(image_paths.low.full)
+        return image_paths
