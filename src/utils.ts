@@ -33,7 +33,6 @@ async function saveToken(
 }
 
 async function refreshTokens(Astro: AstroGlobal) {
-  console.log("REFRESHING");
   await saveToken(
     Astro,
     "login-token",
@@ -83,7 +82,8 @@ export async function isLoggedIn(Astro: AstroGlobal) {
 }
 
 export function redirectToLogin(Astro: AstroGlobal) {
-  const dest = encodeURIComponent(Astro.url.pathname.slice(1));
+  const { pathname, search } = Astro.url;
+  const dest = encodeURIComponent(pathname.slice(1) + search);
   const queryParams = dest ? `?dest=${dest}` : "";
   return Astro.redirect(`/login${queryParams}`);
 }

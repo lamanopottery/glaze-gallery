@@ -22,14 +22,14 @@ const defaultGlaze = Astro.url.searchParams.get(name) ?? "any";
         if (value === "any") {
           url.searchParams.delete(name);
         } else {
-          url.searchParams.set(name, value);
+          url.searchParams.set(name, encodeURIComponent(value));
         }
         history.pushState(null, "", url);
       });
 
       window.addEventListener("popstate", () => {
         const url = new URL(window.location);
-        selectElement.value = url.searchParams.get(name) ?? "any";
+        selectElement.value = decodeURIComponent(url.searchParams.get(name) ?? "any");
       });
     }
   });
