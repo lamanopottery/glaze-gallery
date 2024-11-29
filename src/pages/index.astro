@@ -2,6 +2,8 @@
 import { isLoggedIn, redirectToLogin } from "@/utils";
 import Base from "@/layouts/Base.astro";
 import GlazeSelect from "@/components/GlazeSelect.astro";
+import GlazeTile from "@/components/GlazeTile.astro";
+import glazeComboInfo from "@/data/glaze-combo-info.json";
 
 if (!(await isLoggedIn(Astro))) {
   return redirectToLogin(Astro);
@@ -28,5 +30,8 @@ if (!(await isLoggedIn(Astro))) {
     <GlazeSelect name="glaze1" label="1st dip (under):" />
     <div class="hidden lg:block">\</div>
     <GlazeSelect name="glaze2" label="2nd dip (over):" />
+  </div>
+  <div class="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] items-start gap-5">
+    {Object.keys(glazeComboInfo).map((glazeCombo) => <GlazeTile {glazeCombo} />)}
   </div>
 </Base>

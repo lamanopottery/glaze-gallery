@@ -1,0 +1,26 @@
+---
+import glazeNames from "@/data/glaze-names.json";
+import glazeComboInfo from "@/data/glaze-combo-info.json";
+import imagesLow from "@/data/images-low.json";
+
+interface Props {
+  glazeCombo: string;
+}
+
+const { glazeCombo } = Astro.props;
+
+const { GLAZE_GALLERY_IMAGES_URL } = Astro.locals.runtime.env;
+
+const [glaze1, glaze2] = glazeCombo.split("-");
+const glaze1Name = glazeNames[glaze1 as keyof typeof glazeNames];
+const glaze2Name = glazeNames[glaze2 as keyof typeof glazeNames];
+
+const frontImage = `${glazeCombo as keyof typeof glazeComboInfo}-front` as const;
+const frontImageDir = imagesLow[frontImage];
+const src = `${GLAZE_GALLERY_IMAGES_URL}/${frontImageDir}/${frontImage}-low.webp`;
+---
+
+<div class="overflow-hidden rounded-lg">
+  <img loading="lazy" {src} class="w-full" />
+  <div class="bg-stone-200 px-3 py-1.5 text-center">{glaze1Name} \ {glaze2Name}</div>
+</div>
