@@ -1,0 +1,12 @@
+---
+import type { AstroComponentFactory } from "astro/runtime/server/index.js";
+
+type Props = {
+  /** The icon component to display. */
+  Icon: AstroComponentFactory;
+};
+
+const { Icon } = Astro.props;
+---
+
+<span class="inline-flex items-center">(<Icon />)</span>

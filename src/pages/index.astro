@@ -1,11 +1,13 @@
 ---
 import { isLoggedIn, redirectToLogin } from "@/utils/login";
-import Base from "@/layouts/Base.astro";
-import GlazeSelect from "@/components/GlazeSelect.astro";
-import NotFoodSafeIcon from "@/components/icons/NotFoodSafeIcon.astro";
-import RunnyIcon from "@/components/icons/RunnyIcon.astro";
-import BlisterJumpCrawlIcon from "@/components/icons/BlisterJumpCrawlIcon.astro";
-import GlazeTile from "@/components/GlazeTile.astro";
+import { Base } from "@/layouts";
+import { GlazeSelect, GlazeTile } from "@/components";
+import {
+  NotFoodSafeIcon,
+  RunnyIcon,
+  BlisterJumpCrawlIcon,
+  IconInParentheses,
+} from "@/components/icons";
 import glazeComboInfo from "@/data/glaze-combo-info.json";
 
 if (!(await isLoggedIn(Astro))) {
@@ -18,9 +20,10 @@ if (!(await isLoggedIn(Astro))) {
     <p>
       Glazes can be filtered by first and second dip. Captions are in the format
       &ldquo;1st dip (under) \ 2nd dip (over)&rdquo;. Icons indicate if the glaze
-      combination is not food safe <NotFoodSafeIcon />, runny <RunnyIcon />, or if the
-      combination may blister, jump, or crawl <BlisterJumpCrawlIcon />. Click images for a
-      larger picture and additional notes.
+      combination is not food safe <IconInParentheses Icon={NotFoodSafeIcon} />, runny
+      <IconInParentheses Icon={RunnyIcon} />, or if the combination may blister, jump, or
+      crawl <IconInParentheses Icon={BlisterJumpCrawlIcon} />. Click images for a larger
+      picture and additional notes.
     </p>
     <p>
       <strong>Disclaimer:</strong> Results will vary based on the thickness of the glaze and

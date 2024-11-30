@@ -14,6 +14,6 @@ const viewBox: string = abstract.attributes.viewBox;
 const svgPath: string = abstract.children![0].attributes.d;
 ---
 
-<svg class="h-full w-full" {viewBox} aria-hidden="true">
+<svg class="h-full" {viewBox} aria-hidden="true">
   <path d={svgPath}></path>
 </svg>
