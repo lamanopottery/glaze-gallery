@@ -1,5 +1,5 @@
 ---
-import { isLoggedIn, redirectToLogin } from "@/utils";
+import { isLoggedIn, redirectToLogin } from "@/utils/login";
 import Base from "@/layouts/Base.astro";
 
 if (!(await isLoggedIn(Astro))) {

@@ -13,6 +13,8 @@
   "dependencies": {
     "@astrojs/cloudflare": "^11.2.0",
     "@fontsource-variable/inter": "^5.1.0",
+    "@fortawesome/fontawesome-svg-core": "^6.7.1",
+    "@fortawesome/free-solid-svg-icons": "^6.7.1",
     "astro": "^4.16.8",
     "jose": "^5.9.6"
   },

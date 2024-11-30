@@ -1,0 +1,22 @@
+---
+import { faUtensils, faSlash } from "@fortawesome/free-solid-svg-icons";
+import { iconData } from "@/utils/icon";
+
+const utensilIcon = iconData(faUtensils);
+const slashIcon = iconData(faSlash);
+---
+
+<span class="inline-flex items-center"
+  >(<span role="img" title="Not food safe" class="inline-flex h-5 w-5 items-center">
+    <svg viewBox={slashIcon.viewBox} aria-hidden="true">
+      <symbol id="utensils" viewBox={utensilIcon.viewBox}>
+        <path d={utensilIcon.svgPath}></path>
+      </symbol>
+      <symbol id="slash" viewBox={slashIcon.viewBox} class="fill-red-600">
+        <path d={slashIcon.svgPath}></path>
+      </symbol>
+      <use href="#utensils"></use>
+      <use href="#slash"></use>
+    </svg>
+  </span>)</span
+>
