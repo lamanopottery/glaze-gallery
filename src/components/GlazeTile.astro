@@ -1,5 +1,6 @@
 ---
 import { GLAZE_GALLERY_IMAGES_URL } from "astro:env/server";
+import { glaze1Key, glaze2Key } from "@/constants";
 import glazeNames from "@/data/glaze-names.json";
 import glazeComboInfo from "@/data/glaze-combo-info.json";
 import imagesLow from "@/data/images-low.json";
@@ -17,9 +18,19 @@ const glaze2Name = glazeNames[glaze2 as keyof typeof glazeNames];
 const frontImage = `${glazeCombo as keyof typeof glazeComboInfo}-front` as const;
 const frontImageDir = imagesLow[frontImage];
 const src = `${GLAZE_GALLERY_IMAGES_URL}/${frontImageDir}/${frontImage}-low.webp`;
+
+const defaultSelectedGlaze1 = Astro.url.searchParams.get(glaze1Key);
+const defaultSelectedGlaze2 = Astro.url.searchParams.get(glaze2Key);
+const defaultShow =
+  (defaultSelectedGlaze1 === null || defaultSelectedGlaze1 === glaze1) &&
+  (defaultSelectedGlaze2 === null || defaultSelectedGlaze2 === glaze2);
 ---
 
-<div class="overflow-hidden rounded-lg">
+<div
+  id={glazeCombo}
+  class="glaze-tile overflow-hidden rounded-lg"
+  style={`display: ${defaultShow ? "block" : "none"};`}
+>
   <img loading="lazy" {src} class="w-full" />
   <div class="bg-stone-200 px-3 py-1.5 text-center">{glaze1Name} \ {glaze2Name}</div>
 </div>

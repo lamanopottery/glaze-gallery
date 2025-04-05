@@ -11,30 +11,6 @@ const { name, label } = Astro.props;
 const defaultGlaze = Astro.url.searchParams.get(name) ?? "any";
 ---
 
-<script define:vars={{ name }}>
-  document.addEventListener("DOMContentLoaded", () => {
-    const selectElement = document.getElementById(name);
-
-    if (selectElement) {
-      selectElement.addEventListener("change", () => {
-        const url = new URL(window.location);
-        const { value } = selectElement;
-        if (value === "any") {
-          url.searchParams.delete(name);
-        } else {
-          url.searchParams.set(name, encodeURIComponent(value));
-        }
-        history.pushState(null, "", url);
-      });
-
-      window.addEventListener("popstate", () => {
-        const url = new URL(window.location);
-        selectElement.value = decodeURIComponent(url.searchParams.get(name) ?? "any");
-      });
-    }
-  });
-</script>
-
 <div class="flex items-center gap-2">
   <label for={name}>{label}</label>
   <select name={name} id={name} class="rounded-lg bg-stone-200 px-3 py-1.5">

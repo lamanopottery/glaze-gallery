@@ -1,5 +1,6 @@
 ---
 import { isLoggedIn, redirectToLogin } from "@/utils/login";
+import { glaze1Key, glaze2Key } from "@/constants";
 import { Base } from "@/layouts";
 import { GlazeSelect, GlazeTile } from "@/components";
 import {
@@ -14,6 +15,57 @@ if (!(await isLoggedIn(Astro))) {
   return redirectToLogin(Astro);
 }
 ---
+
+<script>
+  import { glaze1Key, glaze2Key } from "@/constants";
+
+  const updateTiles = (url: URL) => {
+    const selectedGlaze1 = url.searchParams.get(glaze1Key);
+    const selectedGlaze2 = url.searchParams.get(glaze2Key);
+
+    for (const glazeTileElement of document.getElementsByClassName("glaze-tile")) {
+      if (glazeTileElement instanceof HTMLElement) {
+        const [glaze1, glaze2] = glazeTileElement.id.split("-");
+        const show =
+          (selectedGlaze1 === null || selectedGlaze1 === glaze1) &&
+          (selectedGlaze2 === null || selectedGlaze2 === glaze2);
+        glazeTileElement.style.display = show ? "block" : "none";
+      }
+    }
+  };
+
+  function onSelectChange(this: HTMLSelectElement) {
+    const url = new URL(window.location.href);
+    const { name, value } = this;
+    if (value === "any") {
+      url.searchParams.delete(name);
+    } else {
+      url.searchParams.set(name, value);
+    }
+    updateTiles(url);
+    history.pushState(null, "", url);
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const selectElement1 = document.getElementById(glaze1Key);
+    const selectElement2 = document.getElementById(glaze2Key);
+
+    if (
+      selectElement1 instanceof HTMLSelectElement &&
+      selectElement2 instanceof HTMLSelectElement
+    ) {
+      selectElement1.addEventListener("change", onSelectChange);
+      selectElement2.addEventListener("change", onSelectChange);
+
+      window.addEventListener("popstate", () => {
+        const url = new URL(window.location.href);
+        selectElement1.value = url.searchParams.get(glaze1Key) ?? "any";
+        selectElement2.value = url.searchParams.get(glaze2Key) ?? "any";
+        updateTiles(url);
+      });
+    }
+  });
+</script>
 
 <Base>
   <div class="flex max-w-4xl flex-col gap-3 self-center text-base">
@@ -35,9 +87,9 @@ if (!(await isLoggedIn(Astro))) {
     <hr class="max-w-4xl grow border-stone-300" />
   </div>
   <div class="flex flex-col items-center justify-center gap-3 lg:flex-row">
-    <GlazeSelect name="glaze1" label="1st dip (under):" />
+    <GlazeSelect name={glaze1Key} label="1st dip (under):" />
     <div class="hidden lg:block">\</div>
-    <GlazeSelect name="glaze2" label="2nd dip (over):" />
+    <GlazeSelect name={glaze2Key} label="2nd dip (over):" />
   </div>
   <div class="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] items-start gap-5">
     {Object.keys(glazeComboInfo).map((glazeCombo) => <GlazeTile {glazeCombo} />)}
