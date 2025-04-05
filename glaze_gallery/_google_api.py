@@ -74,9 +74,7 @@ class GoogleDrive:
             tz = pytz.timezone("US/Eastern")
             now = datetime.now(tz)
             last_updated_date = now.strftime("%a %b %-d %Y at %-I:%M:%S %p %Z")
-        update_message = (
-            f"Last synced to sites on {last_updated_date} (computed, do not update)"
-        )
+        update_message = f"Last synced to sites on {last_updated_date}"
         request: HttpRequest = self._spreadsheets.values().update(
             spreadsheetId=self._glaze_gallery_spreadsheet_id,
             range=os.environ["GLAZE_GALLERY_LAST_SYNCED_CELL"],

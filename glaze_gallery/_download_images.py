@@ -1,4 +1,5 @@
 from typing import TypeVar, Any
+import os
 import shutil
 import json
 from pathlib import Path
@@ -6,9 +7,10 @@ from dataclasses import dataclass, field
 from tqdm import tqdm
 from dotenv import load_dotenv
 import pandas as pd
+from PIL import Image
 from glaze_gallery._random_dirs import create_random_dir
 from glaze_gallery._google_api import GoogleDrive
-from glaze_gallery._image_processing import Images
+from glaze_gallery._image_processing import Images, download_logo_image
 
 _T = TypeVar("_T", bool, str)
 
@@ -74,17 +76,21 @@ class GlazeData:
             print("User-agent: *\nDisallow: /", file=f)
 
     def save_images_and_update(
-        self, combo: GlazeCombo, front_images: Images, back_images: Images | None
+        self,
+        combo: GlazeCombo,
+        front_images: Images,
+        back_images: Images | None,
+        logo_im: Image.Image,
     ) -> None:
         self.names[combo.glaze1_formatted] = combo.glaze1
         self.names[combo.glaze2_formatted] = combo.glaze2
         self.combo_info[combo.glaze_combo] = combo.info
 
-        front_image_paths = front_images.save(self.downloads_dir)
+        front_image_paths = front_images.save(self.downloads_dir, logo_im)
         self.images_high[combo.front_name_base] = front_image_paths.high.dir_name
         self.images_low[combo.front_name_base] = front_image_paths.low.dir_name
         if back_images:
-            back_image_paths = back_images.save(self.downloads_dir)
+            back_image_paths = back_images.save(self.downloads_dir, logo_im)
             self.images_high[combo.back_name_base] = back_image_paths.high.dir_name
             self.images_low[combo.back_name_base] = back_image_paths.low.dir_name
 
@@ -111,9 +117,13 @@ def _get_value(
 
 def download_images() -> None:
     load_dotenv()
+
+    la_mano_logo = download_logo_image(os.environ["LA_MANO_LOGO"])
+    mud_matters_logo = download_logo_image(os.environ["MUD_MATTERS_LOGO"])
+
     google_drive = GoogleDrive()
     glaze_data = google_drive.get_glaze_data()
-    # google_drive.update_last_synced_cell()
+    google_drive.update_last_synced_cell()
     if _DOWNLOADS_DIR.is_dir():
         shutil.rmtree(_DOWNLOADS_DIR)
     _DOWNLOADS_DIR.mkdir()
@@ -153,10 +163,12 @@ def download_images() -> None:
             )
 
         if not hide_la_mano:
-            la_mano_glaze_data.save_images_and_update(combo, front_images, back_images)
+            la_mano_glaze_data.save_images_and_update(
+                combo, front_images, back_images, la_mano_logo
+            )
         if not hide_mud_matters:
             mud_matters_glaze_data.save_images_and_update(
-                combo, front_images, back_images
+                combo, front_images, back_images, mud_matters_logo
             )
 
     la_mano_glaze_data.save()
