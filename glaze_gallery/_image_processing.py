@@ -43,11 +43,11 @@ class ImagePaths:
 class Images:
 
     _HIGH_DIMS = (2000, 2000)
-    _LOW_DIMS = (700, 700)
-    _LOGO_SCALE = 0.4
-    _LOGO_OFFSET_X = 0.035
+    _LOW_DIMS = (1000, 1000)
+    _LOGO_SCALE = 0.2
+    _LOGO_OFFSET_X = 0.03
     _LOGO_OFFSET_Y = 0.03
-    _LOGO_ALPHA = 0.25
+    _LOGO_ALPHA = 0.15
 
     def __init__(self, image_bytes: io.BytesIO, file_name_base: str) -> None:
         self.im = Image.open(image_bytes)
