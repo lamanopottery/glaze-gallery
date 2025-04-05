@@ -27,7 +27,7 @@ async function saveToken(
   Astro.cookies.set(name, token, {
     expires: expirationDate,
     httpOnly: true,
-    sameSite: "strict",
+    sameSite: "lax",
     secure: true,
   });
 }
@@ -39,6 +39,7 @@ async function refreshTokens(Astro: AstroGlobal) {
 
 async function getPayload(Astro: AstroGlobal, name: string) {
   const loginToken = Astro.cookies.get(name)?.value;
+  console.log(loginToken);
   if (loginToken) {
     try {
       const { payload } = await jwtVerify(loginToken, getSecret());
