@@ -64,6 +64,26 @@ if (!(await isLoggedIn(Astro))) {
         updateTiles(url);
       });
     }
+
+    for (const glazeTileElement of document.getElementsByClassName("glaze-tile")) {
+      const glazeTileInner = glazeTileElement.getElementsByClassName("glaze-tile-inner")[0];
+      if (glazeTileInner instanceof HTMLElement) {
+        const flipIconFrontElement = glazeTileElement.getElementsByClassName("flip-icon-front")[0];
+        const flipIconBackElement = glazeTileElement.getElementsByClassName("flip-icon-back")[0];
+
+        if (flipIconFrontElement) {
+          flipIconFrontElement.addEventListener("click", () => {
+            glazeTileInner.style.transform = "rotateY(-180deg)";
+          });
+        }
+
+        if (flipIconBackElement) {
+          flipIconBackElement.addEventListener("click", () => {
+            glazeTileInner.style.transform = "none";
+          });
+        }
+      }
+    }
   });
 </script>
 

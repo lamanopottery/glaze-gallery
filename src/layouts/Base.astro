@@ -1,6 +1,7 @@
 ---
 import "@fontsource-variable/inter";
 import {
+  GLAZE_GALLERY_STUDIO,
   GLAZE_GALLERY_STUDIO_FAVICON_32,
   GLAZE_GALLERY_STUDIO_FAVICON_192,
 } from "astro:env/server";
@@ -28,8 +29,7 @@ const titlePrefix = title ? `${title} - ` : "";
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
-    <meta name="generator" content={Astro.generator} />
-    <meta name="description" content="Glaze gallery." />
+    <meta name="description" content={`${GLAZE_GALLERY_STUDIO} glaze gallery.`} />
     <title>{titlePrefix}{siteName}</title>
     <link rel="icon" href={GLAZE_GALLERY_STUDIO_FAVICON_32} type="image/gif" sizes="32x32" />
     <link rel="icon" href={GLAZE_GALLERY_STUDIO_FAVICON_192} type="image/gif" sizes="192x192" />
