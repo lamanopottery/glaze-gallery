@@ -1,4 +1,5 @@
 ---
+import { GLAZE_GALLERY_IMAGES_URL } from "astro:env/server";
 import glazeNames from "@/data/glaze-names.json";
 import glazeComboInfo from "@/data/glaze-combo-info.json";
 import imagesLow from "@/data/images-low.json";
@@ -8,8 +9,6 @@ interface Props {
 }
 
 const { glazeCombo } = Astro.props;
-
-const { GLAZE_GALLERY_IMAGES_URL } = Astro.locals.runtime.env;
 
 const [glaze1, glaze2] = glazeCombo.split("-");
 const glaze1Name = glazeNames[glaze1 as keyof typeof glazeNames];

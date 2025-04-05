@@ -1,8 +1,7 @@
 ---
 import { logIn, isLoggedIn } from "@/utils/login";
 import { Base } from "@/layouts";
-
-const { GLAZE_GALLERY_STUDIO_EMAIL } = Astro.locals.runtime.env;
+import { GLAZE_GALLERY_STUDIO_EMAIL } from "astro:env/server";
 
 const postRequest = Astro.request.method === "POST";
 if (postRequest) {
@@ -30,17 +29,14 @@ if (await isLoggedIn(Astro)) {
     >.
   </p>
   <div class="flex justify-center">
-    <form
-      method="POST"
-      class="flex max-w-md grow flex-col gap-5 rounded-lg bg-stone-200 p-5"
-    >
+    <form method="POST" class="flex max-w-md grow flex-col gap-5 rounded-lg bg-stone-200 p-5">
       <div class="flex flex-col gap-1">
         <label for="password">Password</label>
         <input
           type="password"
           id="password"
           name="password"
-          class="rounded-lg px-3 py-1.5"
+          class="rounded-lg bg-white px-3 py-1.5"
           size={10}
         />
         {postRequest && <p class="mt-1 text-red-600">Incorrect password</p>}

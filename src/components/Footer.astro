@@ -1,6 +1,5 @@
 ---
-const { env } = Astro.locals.runtime;
-const { GLAZE_GALLERY_STUDIO } = env;
+import { GLAZE_GALLERY_STUDIO } from "astro:env/server";
 ---
 
 <footer class="pb-5 text-center text-lg">

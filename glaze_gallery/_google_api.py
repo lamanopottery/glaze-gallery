@@ -67,7 +67,7 @@ class GoogleDrive:
         # replace them with empty strings.
         return pd.DataFrame(data=values, columns=values[0]).iloc[1:].fillna(value="")
 
-    def update_last_synced_cell(self, *, never: bool = True) -> None:
+    def update_last_synced_cell(self, *, never: bool = False) -> None:
         if never:
             last_updated_date = "NEVER"
         else:

@@ -113,6 +113,7 @@ def download_images() -> None:
     load_dotenv()
     google_drive = GoogleDrive()
     glaze_data = google_drive.get_glaze_data()
+    # google_drive.update_last_synced_cell()
     if _DOWNLOADS_DIR.is_dir():
         shutil.rmtree(_DOWNLOADS_DIR)
     _DOWNLOADS_DIR.mkdir()
