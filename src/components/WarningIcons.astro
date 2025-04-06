@@ -1,0 +1,21 @@
+---
+import glazeComboInfo from "@/data/glaze-combo-info.json";
+import { NotFoodSafeIcon, RunnyIcon, BlisterJumpCrawlIcon } from "@/components/icons";
+
+interface Props {
+  glazeCombo: string;
+}
+
+const { glazeCombo } = Astro.props;
+
+const info = glazeComboInfo[glazeCombo as keyof typeof glazeComboInfo];
+const notFoodSafe = "notFoodSafe" in info ? info.notFoodSafe : false;
+const runny = "runny" in info ? info.runny : false;
+const blisterJumpCrawl = "blisterJumpCrawl" in info ? info.blisterJumpCrawl : false;
+---
+
+<div class="flex h-5 items-center gap-2">
+  {notFoodSafe && <NotFoodSafeIcon />}
+  {runny && <RunnyIcon />}
+  {blisterJumpCrawl && <BlisterJumpCrawlIcon />}
+</div>

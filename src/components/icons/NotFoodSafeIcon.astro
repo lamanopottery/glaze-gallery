@@ -3,11 +3,11 @@ import { faUtensils, faSlash } from "@fortawesome/free-solid-svg-icons";
 import Icon from "./Icon.astro";
 ---
 
-<span role="img" title="Not food safe" class="grid justify-items-center">
-  <span aria-hidden="true" class="col-span-full row-span-full h-4">
+<span role="img" title="Not food safe" class="grid h-full grid-cols-[20px] justify-items-center">
+  <span aria-hidden="true" class="col-span-full row-span-full h-full">
     <Icon icon={faUtensils} />
   </span>
-  <span aria-hidden="true" class="col-span-full row-span-full h-4 fill-red-600">
+  <span aria-hidden="true" class="col-span-full row-span-full h-full fill-red-600">
     <Icon icon={faSlash} />
   </span>
 </span>

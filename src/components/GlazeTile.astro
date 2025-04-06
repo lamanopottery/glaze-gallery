@@ -5,6 +5,7 @@ import glazeNames from "@/data/glaze-names.json";
 import glazeComboInfo from "@/data/glaze-combo-info.json";
 import imagesLow from "@/data/images-low.json";
 import { FlipIcon } from "@/components/icons";
+import { WarningIcons } from "@/components";
 
 interface Props {
   glazeCombo: string;
@@ -40,6 +41,7 @@ const defaultShow =
 >
   <div class="glaze-tile-inner relative duration-500 transform-3d">
     <div class="relative overflow-hidden rounded-lg backface-hidden">
+      <img loading="lazy" src={srcFront} class="w-full" />
       {
         srcBack && (
           <div class="flip-icon-front absolute top-2 right-2 cursor-pointer">
@@ -47,18 +49,29 @@ const defaultShow =
           </div>
         )
       }
-      <img loading="lazy" src={srcFront} class="w-full" />
-      <div class="bg-stone-200 px-3 py-1.5 text-center">{glaze1Name} \ {glaze2Name}</div>
+      <div class="flex items-center gap-3 bg-stone-200 px-3 py-1.5">
+        <div class="flex-1">
+          <WarningIcons {glazeCombo} />
+        </div>
+        <div>{glaze1Name} \ {glaze2Name}</div>
+        <div class="flex-1"></div>
+      </div>
     </div>
     {
       srcBack && (
         <div class="absolute top-0 left-0 rotate-y-180 overflow-hidden rounded-lg backface-hidden">
+          <img loading="lazy" src={srcBack} class="w-full" />
           <div class="flip-icon-back absolute top-2 right-2 rotate-y-180 cursor-pointer">
             <FlipIcon />
           </div>
-          <img loading="lazy" src={srcBack} class="w-full" />
-          <div class="bg-stone-200 px-3 py-1.5 text-center">
-            {glaze1Name} \ {glaze2Name}
+          <div class="flex items-center gap-3 bg-stone-200 px-3 py-1.5">
+            <div class="flex-1">
+              <WarningIcons {glazeCombo} />
+            </div>
+            <div>
+              {glaze1Name} \ {glaze2Name}
+            </div>
+            <div class="flex-1" />
           </div>
         </div>
       )
