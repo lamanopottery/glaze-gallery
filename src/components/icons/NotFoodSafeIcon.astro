@@ -1,13 +1,19 @@
 ---
 import { faUtensils, faSlash } from "@fortawesome/free-solid-svg-icons";
 import Icon from "./Icon.astro";
+
+interface Props {
+  height: number;
+}
+
+const { height } = Astro.props;
 ---
 
-<span role="img" title="Not food safe" class="grid h-full grid-cols-[20px] justify-items-center">
-  <span aria-hidden="true" class="col-span-full row-span-full h-full">
+<span role="img" title="Not food safe" class="grid justify-items-center">
+  <span aria-hidden="true" class={`col-span-full row-span-full h-${height}`}>
     <Icon icon={faUtensils} />
   </span>
-  <span aria-hidden="true" class="col-span-full row-span-full h-full fill-red-600">
+  <span aria-hidden="true" class={`col-span-full row-span-full h-${height} fill-red-600`}>
     <Icon icon={faSlash} />
   </span>
 </span>
