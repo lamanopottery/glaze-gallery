@@ -30,6 +30,7 @@ const titlePrefix = title ? `${title} - ` : "";
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
     <meta name="description" content={`${GLAZE_GALLERY_STUDIO} glaze gallery.`} />
     <title>{titlePrefix}{siteName}</title>
     <script
