@@ -71,16 +71,30 @@ if (!(await isLoggedIn(Astro))) {
         const flipIconFrontElement = glazeTileElement.getElementsByClassName("flip-icon-front")[0];
         const flipIconBackElement = glazeTileElement.getElementsByClassName("flip-icon-back")[0];
 
-        if (flipIconFrontElement) {
-          flipIconFrontElement.addEventListener("click", () => {
+        if (
+          flipIconFrontElement instanceof HTMLElement &&
+          flipIconBackElement instanceof HTMLElement
+        ) {
+          const rotateToBack = () => {
             glazeTileInner.style.transform = "rotateY(-180deg)";
-          });
-        }
+            flipIconFrontElement.tabIndex = -1;
+            flipIconFrontElement.ariaHidden = "true";
+            flipIconBackElement.tabIndex = 0;
+            flipIconBackElement.ariaHidden = "false";
+          };
 
-        if (flipIconBackElement) {
-          flipIconBackElement.addEventListener("click", () => {
+          const rotateToFront = () => {
             glazeTileInner.style.transform = "none";
-          });
+            flipIconBackElement.tabIndex = -1;
+            flipIconBackElement.ariaHidden = "true";
+            flipIconFrontElement.tabIndex = 0;
+            flipIconFrontElement.ariaHidden = "false";
+          };
+
+          flipIconFrontElement.addEventListener("click", rotateToBack);
+          flipIconFrontElement.addEventListener("keypress", rotateToBack);
+          flipIconBackElement.addEventListener("click", rotateToFront);
+          flipIconBackElement.addEventListener("keypress", rotateToFront);
         }
       }
     }

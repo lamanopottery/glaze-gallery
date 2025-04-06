@@ -45,7 +45,12 @@ const defaultShow =
       <img loading="lazy" src={srcFront} alt={`${caption} Front`} class="w-full" />
       {
         srcBack && (
-          <div class="flip-icon-front absolute top-2 right-2 cursor-pointer">
+          <div
+            tabindex={0}
+            role="button"
+            aria-hidden="false"
+            class="flip-icon-front absolute top-2 right-2 cursor-pointer"
+          >
             <FlipIcon />
           </div>
         )
@@ -62,7 +67,12 @@ const defaultShow =
       srcBack && (
         <div class="absolute top-0 left-0 rotate-y-180 overflow-hidden rounded-lg backface-hidden">
           <img loading="lazy" src={srcBack} alt={`${caption} Back`} class="w-full" />
-          <div class="flip-icon-back absolute top-2 right-2 rotate-y-180 cursor-pointer">
+          <div
+            tabindex={-1}
+            role="button"
+            aria-hidden="true"
+            class="flip-icon-back absolute top-2 right-2 rotate-y-180 cursor-pointer"
+          >
             <FlipIcon />
           </div>
           <div class="flex items-center gap-3 bg-stone-200 px-3 py-1.5">

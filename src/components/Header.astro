@@ -8,9 +8,11 @@ import { siteName } from "@/constants";
 ---
 
 <header class="flex flex-col items-center justify-center gap-2 bg-stone-200 p-4 md:flex-row">
-  <a class="flex-1" href={GLAZE_GALLERY_STUDIO_URL}>
-    <img src={GLAZE_GALLERY_STUDIO_LOGO} alt={GLAZE_GALLERY_STUDIO} class="h-16" />
-  </a>
+  <div class="flex-1">
+    <a href={GLAZE_GALLERY_STUDIO_URL} class="inline-block">
+      <img src={GLAZE_GALLERY_STUDIO_LOGO} alt={GLAZE_GALLERY_STUDIO} class="h-16" />
+    </a>
+  </div>
   <a href="/"><h1 class="text-center text-5xl font-medium">{siteName}</h1></a>
   <div class="flex-1"></div>
 </header>
