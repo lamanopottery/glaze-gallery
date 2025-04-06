@@ -9,6 +9,7 @@ export default defineConfig({
   vite: { plugins: [tailwindcss()] },
   env: {
     schema: {
+      GLAZE_GALLERY_URL: envField.string({ context: "server", access: "public" }),
       GLAZE_GALLERY_STUDIO: envField.string({ context: "server", access: "public" }),
       GLAZE_GALLERY_STUDIO_EMAIL: envField.string({ context: "server", access: "public" }),
       GLAZE_GALLERY_STUDIO_URL: envField.string({ context: "server", access: "public" }),
