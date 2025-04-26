@@ -17,6 +17,7 @@ dist/
 
 # Python
 __pycache__/
+.venv/
 
 # Cloudflare
 .wrangler/

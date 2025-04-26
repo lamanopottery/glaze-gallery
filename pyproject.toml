@@ -1,38 +1,40 @@
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
-[tool.poetry]
+[project]
 name = "glaze-gallery"
 version = "0.1.0"
 description = "Scripts for syncing data for the live glaze gallery websites."
-authors = ["Alex Hadley <contact@alexhadley.net>"]
 readme = "README.md"
+authors = [{ name = "Alex Hadley", email = "contact@alexhadley.net" }]
+requires-python = ">=3.13"
+dependencies = [
+    "cairosvg>=2.7.1",
+    "fake-useragent>=2.2.0",
+    "google-api-python-client>=2.168.0",
+    "google-auth-httplib2>=0.2.0",
+    "google-auth-oauthlib>=1.2.2",
+    "numpy>=2.2.5",
+    "pandas>=2.2.3",
+    "pillow>=11.2.1",
+    "python-dotenv>=1.1.0",
+    "pytz>=2025.2",
+    "requests>=2.32.3",
+    "tqdm>=4.67.1",
+]
 
-[tool.poetry.dependencies]
-python = "^3.11"
-tqdm = "^4.66.6"
-pytz = "^2024.2"
-requests = "^2.32.3"
-python-dotenv = "^1.0.1"
-numpy = "^2.2.4"
-pandas = "^2.2.3"
-pillow = "^11.0.0"
-cairosvg = "^2.7.1"
-google-api-python-client = "^2.151.0"
-google-auth-httplib2 = "^0.2.0"
-google-auth-oauthlib = "^1.2.1"
-fake-useragent = "^2.1.0"
+[project.scripts]
+download_images = "glaze_gallery._download_images:download_images"
+download_data = "glaze_gallery._download_data:download_data"
 
-[tool.poetry.group.dev.dependencies]
-mypy = "^1.13.0"
-types-tqdm = "^4.66.0.20240417"
-types-requests = "^2.32.0.20241016"
-pandas-stubs = "^2.2.3.241009"
+[dependency-groups]
+dev = [
+    "mypy>=1.15.0",
+    "pandas-stubs>=2.2.3.250308",
+    "types-requests>=2.32.0.20250328",
+    "types-tqdm>=4.67.0.20250417",
+]
 
 [tool.mypy]
 strict = true
-
-[tool.poetry.scripts]
-download_images = 'glaze_gallery._download_images:download_images'
-download_data = 'glaze_gallery._download_data:download_data'

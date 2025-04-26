@@ -4,28 +4,28 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "poetry run download_data && astro dev",
-    "build": "poetry run download_data && astro check && astro build",
+    "dev": "uv run download_data && astro dev",
+    "build": "uv run download_data && astro check && astro build",
     "preview": "wrangler pages dev ./dist",
     "lint": "astro check && prettier --check ."
   },
-  "packageManager": "yarn@4.8.1",
+  "packageManager": "yarn@4.9.1",
   "dependencies": {
-    "@astrojs/cloudflare": "^12.4.0",
+    "@astrojs/cloudflare": "^12.5.1",
     "@fontsource-variable/inter": "^5.2.5",
     "@fortawesome/fontawesome-svg-core": "^6.7.2",
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
-    "astro": "^5.6.0",
+    "astro": "^5.7.5",
     "jose": "^6.0.10"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.4",
-    "@tailwindcss/vite": "^4.1.2",
+    "@tailwindcss/vite": "^4.1.4",
     "prettier": "^3.5.3",
     "prettier-plugin-astro": "^0.14.1",
     "prettier-plugin-tailwindcss": "^0.6.11",
-    "tailwindcss": "^4.1.2",
-    "typescript": "^5.8.2",
-    "wrangler": "^4.7.0"
+    "tailwindcss": "^4.1.4",
+    "typescript": "^5.8.3",
+    "wrangler": "^4.13.2"
   }
 }
