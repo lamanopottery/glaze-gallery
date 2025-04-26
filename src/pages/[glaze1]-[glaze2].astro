@@ -1,0 +1,28 @@
+---
+import glazeNames from "@/data/glaze-names.json";
+import { isLoggedIn, redirectToLogin } from "@/utils/login";
+import { validGlaze, validGlazeCombo, imageURL } from "@/utils/glaze-combos";
+import { Base } from "@/layouts";
+// import glazeComboInfo from "@/data/glaze-combo-info.json";
+
+if (!(await isLoggedIn(Astro))) {
+  return redirectToLogin(Astro);
+}
+
+const { glaze1, glaze2 } = Astro.params;
+
+const glazeCombo = `${glaze1}-${glaze2}`;
+const srcFront = imageURL(glazeCombo, "front", "high");
+
+if (!validGlaze(glaze1) || !validGlaze(glaze2) || !validGlazeCombo(glazeCombo) || !srcFront) {
+  return Astro.rewrite("/404");
+}
+
+const { [glaze1]: glazeName1, [glaze2]: glazeName2 } = glazeNames;
+const caption = `${glazeName1} \\ ${glazeName2}`;
+// const srcBack = imageURL(glazeCombo, "back", "high");
+---
+
+<Base title={caption}>
+  <img loading="lazy" src={srcFront} alt={`${caption} Front`} class="w-full" />
+</Base>

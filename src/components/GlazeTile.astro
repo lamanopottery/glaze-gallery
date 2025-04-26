@@ -1,9 +1,7 @@
 ---
-import { GLAZE_GALLERY_IMAGES_URL } from "astro:env/server";
-import { glaze1Key, glaze2Key } from "@/constants";
 import glazeNames from "@/data/glaze-names.json";
-import glazeComboInfo from "@/data/glaze-combo-info.json";
-import imagesLow from "@/data/images-low.json";
+import { glaze1Key, glaze2Key } from "@/constants";
+import { validGlaze, imageURL } from "@/utils/glaze-combos";
 import { FlipIcon } from "@/components/icons";
 import { WarningIcons } from "@/components";
 
@@ -14,19 +12,15 @@ interface Props {
 const { glazeCombo } = Astro.props;
 
 const [glaze1, glaze2] = glazeCombo.split("-");
-const glaze1Name = glazeNames[glaze1 as keyof typeof glazeNames];
-const glaze2Name = glazeNames[glaze2 as keyof typeof glazeNames];
-const caption = `${glaze1Name} \\ ${glaze2Name}`;
+const srcFront = imageURL(glazeCombo, "front", "low");
 
-const frontImage = `${glazeCombo as keyof typeof glazeComboInfo}-front` as const;
-const frontImageDir = imagesLow[frontImage];
-const srcFront = `${GLAZE_GALLERY_IMAGES_URL}/${frontImageDir}/${frontImage}-low.webp`;
+if (!validGlaze(glaze1) || !validGlaze(glaze2) || !srcFront) {
+  return null;
+}
 
-const backImage = `${glazeCombo as keyof typeof glazeComboInfo}-back` as const;
-const backImageDir = backImage in imagesLow ? imagesLow[backImage as keyof typeof imagesLow] : null;
-const srcBack = backImageDir
-  ? `${GLAZE_GALLERY_IMAGES_URL}/${backImageDir}/${backImage}-low.webp`
-  : null;
+const { [glaze1]: glazeName1, [glaze2]: glazeName2 } = glazeNames;
+const caption = `${glazeName1} \\ ${glazeName2}`;
+const srcBack = imageURL(glazeCombo, "back", "low");
 
 const defaultSelectedGlaze1 = Astro.url.searchParams.get(glaze1Key);
 const defaultSelectedGlaze2 = Astro.url.searchParams.get(glaze2Key);
