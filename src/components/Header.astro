@@ -1,16 +1,13 @@
 ---
-import {
-  GLAZE_GALLERY_STUDIO,
-  GLAZE_GALLERY_STUDIO_URL,
-  GLAZE_GALLERY_STUDIO_LOGO,
-} from "astro:env/server";
+import { GLAZE_GALLERY_STUDIO, GLAZE_GALLERY_STUDIO_URL } from "astro:env/server";
 import { siteName } from "@/constants";
+import { studio } from "@/utils/studio";
 ---
 
 <header class="flex flex-col items-center justify-center gap-2 bg-stone-200 p-4 md:flex-row">
   <div class="flex-1">
     <a href={GLAZE_GALLERY_STUDIO_URL} class="inline-block">
-      <img src={GLAZE_GALLERY_STUDIO_LOGO} alt={GLAZE_GALLERY_STUDIO} class="h-16" />
+      <img src={studio.logo.src} alt={GLAZE_GALLERY_STUDIO} class="h-16" />
     </a>
   </div>
   <a href="/"><h1 class="text-center text-5xl font-medium">{siteName}</h1></a>

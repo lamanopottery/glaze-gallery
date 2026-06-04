@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2024 La Mano Pottery
+Copyright (c) 2024–2026 La Mano Pottery
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,3 +19,26 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+---
+
+SCOPE AND TRADEMARK NOTICE
+
+The MIT License above applies to the source code of this project only.
+
+The brand assets in this repository — including but not limited to the
+logos, icons, and favicons listed below — are copyright (c) La Mano Pottery
+and are NOT licensed under the MIT License. All rights are reserved.
+
+    public/LM-icon.ico
+    public/LM-icon.svg
+    public/MM-icon-192.png
+    public/MM-icon-32.png
+    src/assets/LM-logo.svg
+    src/assets/MM-logo.svg
+
+You may not use, copy, modify, or distribute these assets, or any
+confusingly similar marks, without prior written permission from
+La Mano Pottery, except for the limited purpose of displaying the
+project unmodified as distributed. Removing or replacing these assets
+does not affect your rights to the source code under the MIT License.

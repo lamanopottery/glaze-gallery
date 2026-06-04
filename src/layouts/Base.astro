@@ -1,13 +1,9 @@
 ---
-import "@fontsource-variable/inter";
-import {
-  GLAZE_GALLERY_URL,
-  GLAZE_GALLERY_STUDIO,
-  GLAZE_GALLERY_STUDIO_FAVICON_32,
-  GLAZE_GALLERY_STUDIO_FAVICON_192,
-} from "astro:env/server";
+import "@fontsource-variable/inter/opsz.css";
+import { GLAZE_GALLERY_URL, GLAZE_GALLERY_STUDIO } from "astro:env/server";
 import "@/styles/global.css";
 import { siteName } from "@/constants";
+import { studio } from "@/utils/studio";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
 
@@ -43,8 +39,11 @@ const titlePrefix = title ? `${title} - ` : "";
         url: `${GLAZE_GALLERY_URL}/`,
       })}
     />
-    <link rel="icon" href={GLAZE_GALLERY_STUDIO_FAVICON_32} type="image/gif" sizes="32x32" />
-    <link rel="icon" href={GLAZE_GALLERY_STUDIO_FAVICON_192} type="image/gif" sizes="192x192" />
+    {
+      studio.favicons.map((favicon) => (
+        <link rel="icon" href={favicon.href} type={favicon.type} sizes={favicon.sizes} />
+      ))
+    }
   </head>
   <body class="bg-stone-100">
     <Header />
