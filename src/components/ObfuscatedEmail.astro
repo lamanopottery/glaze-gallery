@@ -1,0 +1,51 @@
+---
+/**
+ * Renders an email address as a mailto link without the address ever appearing
+ * in the served HTML, so scrapers that harvest addresses from page source come
+ * up empty. The address is XOR-encoded at build time and decoded in the
+ * browser by a custom element; custom elements run their connectedCallback on
+ * every DOM insertion, so the link also re-decodes after every ClientRouter
+ * page swap (a plain <script> would only run on its first navigation).
+ */
+interface Props {
+  email: string;
+}
+
+const { email } = Astro.props;
+
+// The encoding below packs one byte per character, so anything outside
+// Latin-1 would silently corrupt the decoded address; fail the build instead.
+if (!email || [...email].some((char) => char.charCodeAt(0) > 0xff)) {
+  throw new Error(`ObfuscatedEmail: email must be a non-empty Latin-1 string, got "${email}"`);
+}
+
+// Hex string whose first byte is a random XOR key and the rest the key-XORed
+// character codes. A per-build random key keeps the encoded form from being a
+// stable, greppable token for the address.
+const key = Math.floor(Math.random() * 255) + 1;
+const encoded = [key, ...[...email].map((char) => char.charCodeAt(0) ^ key)]
+  .map((byte) => byte.toString(16).padStart(2, "0"))
+  .join("");
+---
+
+{
+  /* Keep everything adjacent, including the script (it renders in place): whitespace between
+  elements becomes a text node that shows as a stray space in the caller. */
+}
+<obfuscated-email data-encoded={encoded}></obfuscated-email><noscript
+  >[enable JavaScript to see this email address]</noscript
+><script>
+  class ObfuscatedEmail extends HTMLElement {
+    connectedCallback() {
+      const bytes = this.dataset.encoded?.match(/.{2}/g)?.map((hex) => parseInt(hex, 16));
+      if (!bytes) return;
+      const [key, ...chars] = bytes;
+      const email = String.fromCharCode(...chars.map((char) => char ^ key));
+      const link = document.createElement("a");
+      link.href = `mailto:${email}`;
+      link.textContent = email;
+      this.replaceChildren(link);
+    }
+  }
+  customElements.define("obfuscated-email", ObfuscatedEmail);
+</script>

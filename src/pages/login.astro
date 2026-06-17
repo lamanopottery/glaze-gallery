@@ -1,6 +1,7 @@
 ---
 import { logIn, isLoggedIn } from "@/utils/login";
 import { Base } from "@/layouts";
+import { ObfuscatedEmail } from "@/components";
 import { GLAZE_GALLERY_STUDIO_EMAIL } from "astro:env/server";
 
 const postRequest = Astro.request.method === "POST";
@@ -24,9 +25,7 @@ if (await isLoggedIn(Astro)) {
 <Base title="Login">
   <p class="self-center">
     If you do not have the password, please contact
-    <a href={`mailto:${GLAZE_GALLERY_STUDIO_EMAIL}`} target="_blank">
-      {GLAZE_GALLERY_STUDIO_EMAIL}</a
-    >.
+    <ObfuscatedEmail email={GLAZE_GALLERY_STUDIO_EMAIL} />.
   </p>
   <div class="flex justify-center">
     <form method="POST" class="flex max-w-md grow flex-col gap-5 rounded-lg bg-stone-200 p-5">
