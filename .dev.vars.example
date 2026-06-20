@@ -1,10 +1,10 @@
-# Public site configuration
+# Astro/Cloudflare runtime configuration; keep these values in sync with .env
 GLAZE_GALLERY_URL=http://localhost:4321
 GLAZE_GALLERY_STUDIO=La Mano Pottery
 GLAZE_GALLERY_STUDIO_EMAIL=studio@example.com
 GLAZE_GALLERY_STUDIO_URL=https://studio.example.com
 GLAZE_GALLERY_IMAGES_URL=https://images.example.com
 
-# Authentication secrets; use non-production values locally
+# Authentication secrets; keep these values in sync with .env
 GLAZE_GALLERY_PASSWORD=change-me
 GLAZE_GALLERY_JWT_SECRET=replace-with-a-long-random-string

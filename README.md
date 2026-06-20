@@ -23,8 +23,10 @@ cp .dev.vars.example .dev.vars
 yarn dev
 ```
 
-Fill in `.env` for the Python commands and `.dev.vars` for Astro/Wrangler. Ask a maintainer for
-the real data sources and credentials. Keep overlapping values in sync.
+Fill in `.env` with the pipeline settings and the Astro settings used by `yarn dev` and
+`yarn build`. `.dev.vars` mirrors the Astro settings for the local Cloudflare/Wrangler runtime;
+keep every value it contains in sync with `.env`. Ask a maintainer for the real data sources and
+credentials.
 
 ## Common commands
 
