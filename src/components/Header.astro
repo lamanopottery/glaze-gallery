@@ -4,12 +4,14 @@ import { siteName } from "@/constants";
 import { studio } from "@/utils/studio";
 ---
 
-<header class="flex flex-col items-center justify-center gap-2 bg-stone-200 p-4 md:flex-row">
+<header class="flex flex-col items-center justify-center gap-2 p-5 md:flex-row md:gap-4">
   <div class="flex-1">
     <a href={GLAZE_GALLERY_STUDIO_URL} class="inline-block">
-      <img src={studio.logo.src} alt={GLAZE_GALLERY_STUDIO} class="h-16" />
+      <img src={studio.logo.src} alt={GLAZE_GALLERY_STUDIO} class="h-16 w-auto md:h-20" />
     </a>
   </div>
-  <a href="/"><h1 class="text-center text-5xl font-medium">{siteName}</h1></a>
+  <a href="/">
+    <h1 class="text-heading text-center text-5xl font-medium tracking-[0.02em]">{siteName}</h1>
+  </a>
   <div class="flex-1"></div>
 </header>

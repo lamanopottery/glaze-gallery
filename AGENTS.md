@@ -58,9 +58,11 @@ One codebase serves multiple pottery studios (currently "La Mano Pottery" and "M
 `download_images` produces a **separate data set per studio** (`downloads/la-mano`,
 `downloads/mud-matters`), honoring per-row `hide_la_mano` / `hide_mud_matters` flags so a combo can
 appear on one studio's site but not another's. At runtime the active studio is chosen by
-`GLAZE_GALLERY_STUDIO`, which selects branding (logo + favicons) in `src/utils/studio.ts`. Adding a
-studio touches **both** sides: the `STUDIOS` map in `studio.ts` (+ logo assets) and the hardcoded
-per-studio dirs/flags/logos in `_download_images.py`.
+`GLAZE_GALLERY_STUDIO`, which selects branding (logo, favicons, background texture + color, and the
+`data-studio` key that drives per-studio CSS overrides in `src/styles/global.css`) in
+`src/utils/studio.ts`. Adding a studio touches **both** sides: the `STUDIOS` map in `studio.ts` (+
+logo/texture assets and a `[data-studio="…"]` block in `global.css`) and the hardcoded per-studio
+dirs/flags/logos in `_download_images.py`.
 
 ### Image hosting & obfuscation
 

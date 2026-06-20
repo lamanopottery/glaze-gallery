@@ -33,3 +33,6 @@ token.json
 # Downloads
 downloads/
 data/
+
+# Claude
+.claude/worktrees/

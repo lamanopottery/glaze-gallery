@@ -1,1 +1,21 @@
 @import "tailwindcss";
+
+@theme {
+  --font-sans: "DM Sans Variable", sans-serif;
+  --color-clay: #2a1a0e;
+  --color-clay-link: #6f4325;
+  --color-clay-button: #755139;
+  --color-clay-button-hover: #8a6248;
+  --color-clay-button-text: rgb(255 255 255 / 85%);
+  /* The header logo + title are white on the kraft texture (matching the white
+     studio logos), while body copy stays clay. */
+  --color-heading: #ffffff;
+}
+
+/* Per-studio color overrides, keyed by the data-studio attribute the layout
+   stamps onto <html> from the active studio. */
+[data-studio="mud-matters"] {
+  --color-clay-link: #42635e;
+  --color-clay-button: #42635e;
+  --color-clay-button-hover: #4c746e;
+}

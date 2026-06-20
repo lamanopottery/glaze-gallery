@@ -1,5 +1,5 @@
 ---
-import "@fontsource-variable/inter/opsz.css";
+import "@fontsource-variable/dm-sans/opsz.css";
 import { GLAZE_GALLERY_URL, GLAZE_GALLERY_STUDIO } from "astro:env/server";
 import "@/styles/global.css";
 import { siteName } from "@/constants";
@@ -19,15 +19,26 @@ type Props = {
 
 const { title } = Astro.props;
 const titlePrefix = title ? `${title} - ` : "";
+
+// Paint the repeating kraft-paper texture over the studio's background color.
+// The asset is referenced directly (not via getImage) because the site renders
+// on-demand on Cloudflare, which can't run sharp for runtime image optimization;
+// Astro emits the imported tile as a static asset, and a noisy paper texture
+// tiled at 600px doesn't need per-density variants to look crisp.
+const backgroundImageCss = {
+  backgroundImage: `url("${studio.backgroundTile.src}")`,
+  backgroundSize: "600px auto",
+};
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" data-studio={studio.key} style={{ backgroundColor: studio.backgroundColor }}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={`${GLAZE_GALLERY_STUDIO} glaze gallery.`} />
+    <meta name="theme-color" content={studio.backgroundColor} />
     <title>{titlePrefix}{siteName}</title>
     <script
       is:inline
@@ -45,7 +56,7 @@ const titlePrefix = title ? `${title} - ` : "";
       ))
     }
   </head>
-  <body class="bg-stone-100">
+  <body class="text-clay" style={backgroundImageCss}>
     <Header />
     <main class="flex flex-col gap-5 p-5 text-lg">
       <slot />
@@ -56,10 +67,11 @@ const titlePrefix = title ? `${title} - ` : "";
 
 <style is:global>
   html {
-    font-family: "Inter Variable", sans-serif;
+    font-family: "DM Sans Variable", sans-serif;
   }
 
   a {
+    color: var(--color-clay-link);
     text-decoration-thickness: 1.5px;
     text-underline-offset: 2px;
   }

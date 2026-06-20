@@ -553,10 +553,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fontsource-variable/inter@npm:^5.2.5":
-  version: 5.2.5
-  resolution: "@fontsource-variable/inter@npm:5.2.5"
-  checksum: 10c0/e950b76fc7ce58cc0d32afaf5f21835eb4e2cb0dbe1ab17786258d13bcc19147de69e3776db3fb91bd570ed21fcc8ca75d8820ed91572fafd866110b94adc5c3
+"@fontsource-variable/dm-sans@npm:^5.2.8":
+  version: 5.2.8
+  resolution: "@fontsource-variable/dm-sans@npm:5.2.8"
+  checksum: 10c0/99971f181c343a81f72ab6d8d1354ca38bc138054e352e922a12c2be52083598446436a584b67e6e505a3e2ffdc65933c3faa290fbdb425b4768a5f4e90e12db
   languageName: node
   linkType: hard
 
@@ -2533,7 +2533,7 @@ __metadata:
   dependencies:
     "@astrojs/check": "npm:^0.9.4"
     "@astrojs/cloudflare": "npm:^12.5.3"
-    "@fontsource-variable/inter": "npm:^5.2.5"
+    "@fontsource-variable/dm-sans": "npm:^5.2.8"
     "@fortawesome/fontawesome-svg-core": "npm:^6.7.2"
     "@fortawesome/free-solid-svg-icons": "npm:^6.7.2"
     "@tailwindcss/vite": "npm:^4.1.7"

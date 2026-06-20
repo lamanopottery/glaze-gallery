@@ -28,19 +28,23 @@ if (await isLoggedIn(Astro)) {
     <ObfuscatedEmail email={GLAZE_GALLERY_STUDIO_EMAIL} />.
   </p>
   <div class="flex justify-center">
-    <form method="POST" class="flex max-w-md grow flex-col gap-5 rounded-lg bg-stone-200 p-5">
+    <form method="POST" class="flex max-w-md grow flex-col gap-5 rounded-lg bg-white/60 p-5">
       <div class="flex flex-col gap-1">
         <label for="password">Password</label>
         <input
           type="password"
           id="password"
           name="password"
-          class="rounded-lg bg-white px-3 py-1.5"
+          class="text-clay rounded-lg bg-white px-3 py-1.5"
           size={10}
         />
         {postRequest && <p class="mt-1 text-red-600">Incorrect password</p>}
       </div>
-      <button class="rounded-lg bg-stone-300 py-1.5 hover:brightness-90"> Log in </button>
+      <button
+        class="bg-clay-button text-clay-button-text hover:bg-clay-button-hover rounded-lg py-1.5 transition-colors"
+      >
+        Log in
+      </button>
     </form>
   </div>
 </Base>
