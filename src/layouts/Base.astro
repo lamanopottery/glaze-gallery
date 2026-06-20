@@ -56,10 +56,10 @@ const backgroundImageCss = {
       ))
     }
   </head>
-  <body class="text-clay" style={backgroundImageCss}>
+  <body class="text-clay flex min-h-screen flex-col" style={backgroundImageCss}>
     <Header />
     <main
-      class="flex flex-col gap-5 bg-white/20 p-5 text-[17px] leading-[25px] md:text-[18px] md:leading-[26px]"
+      class="flex grow flex-col gap-5 bg-white/20 p-5 text-[17px] leading-[25px] md:text-[18px] md:leading-[26px]"
     >
       <slot />
     </main>

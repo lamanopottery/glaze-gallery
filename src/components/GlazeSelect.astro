@@ -13,7 +13,7 @@ const defaultGlaze = Astro.url.searchParams.get(name) ?? "any";
 
 <div class="flex items-center gap-2">
   <label for={name}>{label}</label>
-  <select name={name} id={name} class="text-clay rounded-lg bg-white/75 px-3 py-1.5">
+  <select name={name} id={name} class="text-clay rounded bg-white/75 px-3 py-1.5">
     <option value="any" selected={defaultGlaze === "any"}>Any</option>
     {
       Object.entries(glazeNames).map(([glaze, glazeName]) => (

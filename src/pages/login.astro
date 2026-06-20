@@ -23,28 +23,32 @@ if (await isLoggedIn(Astro)) {
 ---
 
 <Base title="Login">
-  <p class="self-center">
-    If you do not have the password, please contact
-    <ObfuscatedEmail email={GLAZE_GALLERY_STUDIO_EMAIL} />.
-  </p>
-  <div class="flex justify-center">
-    <form method="POST" class="flex max-w-md grow flex-col gap-5 rounded-lg bg-white/60 p-5">
+  <form
+    method="POST"
+    class="mx-auto mt-3 flex w-full max-w-4xl flex-col gap-5 bg-white/40 px-10 py-8"
+  >
+    <p class="text-center">
+      If you do not have the password, please contact
+      <ObfuscatedEmail email={GLAZE_GALLERY_STUDIO_EMAIL} />.
+    </p>
+    <div class="flex w-full max-w-md flex-col gap-5 self-center">
       <div class="flex flex-col gap-1">
-        <label for="password">Password</label>
+        <label for="password" class="sr-only">Password</label>
         <input
           type="password"
           id="password"
           name="password"
-          class="text-clay rounded-lg bg-white px-3 py-1.5"
+          placeholder="Password"
+          class="text-clay rounded bg-white/75 px-3 py-1.5 outline-none transition-colors focus:bg-white/90"
           size={10}
         />
         {postRequest && <p class="mt-1 text-red-600">Incorrect password</p>}
       </div>
       <button
-        class="bg-clay-button text-clay-button-text hover:bg-clay-button-hover rounded-lg py-1.5 transition-colors"
+        class="bg-clay-button text-clay-button-text hover:bg-clay-button-hover rounded py-1.5 transition-colors"
       >
         Log in
       </button>
-    </form>
-  </div>
+    </div>
+  </form>
 </Base>

@@ -6,7 +6,7 @@
   --color-clay-link: #6f4325;
   --color-clay-button: #755139;
   --color-clay-button-hover: #8a6248;
-  --color-clay-button-text: rgb(255 255 255 / 85%);
+  --color-clay-button-text: rgb(255 255 255 / 75%);
   /* The header logo + title are white on the kraft texture (matching the white
      studio logos), while body copy stays clay. */
   --color-heading: #ffffff;
