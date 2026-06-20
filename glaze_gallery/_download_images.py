@@ -1,5 +1,4 @@
 from typing import TypeVar, Any
-import os
 import shutil
 import json
 from pathlib import Path
@@ -10,13 +9,16 @@ import pandas as pd
 from PIL import Image
 from glaze_gallery._random_dirs import create_random_dir
 from glaze_gallery._google_api import GoogleDrive
-from glaze_gallery._image_processing import Images, download_logo_image
+from glaze_gallery._image_processing import Images, load_logo_image
 
 _T = TypeVar("_T", bool, str)
 
 _DOWNLOADS_DIR = Path("downloads")
 _LA_MANO_DOWNLOADS_DIR = _DOWNLOADS_DIR / "la-mano"
 _MUD_MATTERS_DOWNLOADS_DIR = _DOWNLOADS_DIR / "mud-matters"
+_ASSETS_DIR = Path(__file__).resolve().parent.parent / "src" / "assets"
+_LA_MANO_LOGO = _ASSETS_DIR / "LM-logo.svg"
+_MUD_MATTERS_LOGO = _ASSETS_DIR / "MM-logo.svg"
 
 
 @dataclass
@@ -118,8 +120,8 @@ def _get_value(
 def download_images() -> None:
     load_dotenv()
 
-    la_mano_logo = download_logo_image(os.environ["LA_MANO_LOGO"])
-    mud_matters_logo = download_logo_image(os.environ["MUD_MATTERS_LOGO"])
+    la_mano_logo = load_logo_image(_LA_MANO_LOGO)
+    mud_matters_logo = load_logo_image(_MUD_MATTERS_LOGO)
 
     google_drive = GoogleDrive()
     glaze_data = google_drive.get_glaze_data()

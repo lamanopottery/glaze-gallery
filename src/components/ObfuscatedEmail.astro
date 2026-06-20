@@ -5,7 +5,7 @@
  * up empty. The address is XOR-encoded at build time and decoded in the
  * browser by a custom element; custom elements run their connectedCallback on
  * every DOM insertion, so the link also re-decodes after every ClientRouter
- * page swap (a plain <script> would only run on its first navigation).
+ * page swap (a plain script element would only run on its first navigation).
  */
 interface Props {
   email: string;

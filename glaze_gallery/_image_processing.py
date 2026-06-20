@@ -1,19 +1,15 @@
 import io
 from pathlib import Path
 from dataclasses import dataclass, InitVar
-import requests
-from fake_useragent import UserAgent
 import numpy as np
 from PIL import Image
 import cairosvg  # type: ignore[import-untyped]
 from glaze_gallery._random_dirs import random_str
 
 
-def download_logo_image(svg_url: str) -> Image.Image:
-    r = requests.get(svg_url, headers={"User-Agent": UserAgent().firefox})
-    r.raise_for_status()
+def load_logo_image(svg_path: Path) -> Image.Image:
     out = io.BytesIO()
-    cairosvg.svg2png(r.content, output_width=1000, write_to=out)
+    cairosvg.svg2png(svg_path.read_bytes(), output_width=1000, write_to=out)
     return Image.open(out)
 
 

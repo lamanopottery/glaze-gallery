@@ -19,6 +19,9 @@ dist/
 __pycache__/
 .venv/
 
+# Mypy
+.mypy_cache/
+
 # Cloudflare
 .wrangler/
 .dev.vars

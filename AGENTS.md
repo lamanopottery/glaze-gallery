@@ -96,10 +96,13 @@ runs in Astro `output: "server"` mode (no static prerender).
 ## Conventions & gotchas
 
 - **Path alias**: `@/*` maps to `src/*` (see `tsconfig.json`).
-- **Env vars** are declared with a typed schema in `astro.config.ts` and imported via
-  `astro:env/server` — add new vars there (mark secrets with `access: "secret"`). Locally, the
-  **Python pipeline reads `.env`** while the **Astro/Wrangler runtime reads `.dev.vars`**; the two
-  overlap and must be kept in sync. Neither is committed.
+- **Env vars** are split by process. The **Python pipeline reads `.env`** (copy
+  `.env.example`), while the **Astro/Wrangler runtime reads `.dev.vars`** (copy
+  `.dev.vars.example`). Only variables used by both processes, currently
+  `GLAZE_GALLERY_IMAGES_URL`, belong in both files and must stay in sync. The populated files are
+  ignored; the example files are committed and should be updated whenever configuration changes.
+  Astro variables are declared with a typed schema in `astro.config.ts` and imported via
+  `astro:env/server`; mark secrets with `access: "secret"`.
 - `src/data/*.json` is generated — edit the Google Sheet and re-run the pipeline, not the JSON.
 - TypeScript extends `astro/tsconfigs/strict`; mypy is `strict`. Keep both clean — `astro check`
   runs in the build.
