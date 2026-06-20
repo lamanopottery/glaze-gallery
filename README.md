@@ -26,13 +26,16 @@ yarn dev
 Fill in `.env` with the pipeline settings and the Astro settings used by `yarn dev` and
 `yarn build`. `.dev.vars` mirrors the Astro settings for the local Cloudflare/Wrangler runtime;
 keep every value it contains in sync with `.env`. Ask a maintainer for the real data sources and
-credentials.
+credentials. Studio names, contact details, app and static-data URLs, and branding are configured
+in `src/utils/studio.ts`. Set `GLAZE_GALLERY_STUDIO` to `lamanopottery` or `mudmatters` in both env
+files to select the studio.
 
 ## Common commands
 
 ```sh
 yarn dev                         # Download manifests and start Astro
 yarn build                       # Download manifests, typecheck, and build
+yarn preview                     # Preview the build in Wrangler
 yarn lint                        # Typecheck and check formatting
 poetry run mypy glaze_gallery    # Typecheck the Python pipeline
 poetry run download_images       # Rebuild images and manifests from Google data

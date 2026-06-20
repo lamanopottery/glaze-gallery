@@ -14,12 +14,12 @@
 
 /* Per-studio color overrides, keyed by the data-studio attribute the layout
    stamps onto <html> from the active studio. */
-[data-studio="mud-matters"] {
+[data-studio="mudmatters"] {
   --color-clay-link: #42635e;
   --color-clay-button: #42635e;
   --color-clay-button-hover: #4c746e;
 }
 
-[data-studio="mud-matters"] .bg-white\/20 {
+[data-studio="mudmatters"] .bg-white\/20 {
   background-color: rgb(255 255 255 / 35%);
 }

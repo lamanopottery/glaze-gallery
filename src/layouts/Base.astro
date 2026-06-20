@@ -1,6 +1,5 @@
 ---
 import "@fontsource-variable/dm-sans/opsz.css";
-import { GLAZE_GALLERY_URL, GLAZE_GALLERY_STUDIO } from "astro:env/server";
 import "@/styles/global.css";
 import { siteName } from "@/constants";
 import { studio } from "@/utils/studio";
@@ -37,7 +36,7 @@ const backgroundImageCss = {
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
-    <meta name="description" content={`${GLAZE_GALLERY_STUDIO} glaze gallery.`} />
+    <meta name="description" content={`${studio.name} glaze gallery.`} />
     <meta name="theme-color" content={studio.backgroundColor} />
     <title>{titlePrefix}{siteName}</title>
     <script
@@ -46,8 +45,8 @@ const backgroundImageCss = {
       set:html={JSON.stringify({
         "@context": "https://schema.org",
         "@type": "WebSite",
-        name: `${GLAZE_GALLERY_STUDIO} Glaze Gallery`,
-        url: `${GLAZE_GALLERY_URL}/`,
+        name: `${studio.name} Glaze Gallery`,
+        url: `${studio.galleryUrl}/`,
       })}
     />
     {

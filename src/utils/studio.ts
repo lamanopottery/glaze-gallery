@@ -17,8 +17,16 @@ type Favicon = {
 
 /** Branding assets for a single studio. */
 type Studio = {
-  /** Short slug stamped onto `<html data-studio>` to drive per-studio CSS. */
-  key: string;
+  /** Studio name shown in page metadata and site chrome. */
+  name: string;
+  /** Public contact email shown on the login page. */
+  email: string;
+  /** Public studio website linked from the header logo. */
+  url: string;
+  /** Canonical URL for this studio's glaze gallery deployment. */
+  galleryUrl: string;
+  /** Static host containing this studio's published images and JSON manifests. */
+  imagesUrl: string;
   /** Studio logo shown in the header. */
   logo: ImageMetadata;
   /** Favicons for the document head. */
@@ -30,9 +38,13 @@ type Studio = {
 };
 
 /** Branding assets keyed by the value of the GLAZE_GALLERY_STUDIO env var. */
-const STUDIOS: Record<string, Studio | undefined> = {
-  "La Mano Pottery": {
-    key: "la-mano",
+const STUDIOS = {
+  lamanopottery: {
+    name: "La Mano Pottery",
+    email: "info@lamanopottery.com",
+    url: "https://www.lamanopottery.com",
+    galleryUrl: "https://glazegallery.lamanopottery.com",
+    imagesUrl: "https://glazegalleryimages.lamanopottery.com",
     logo: LMLogo,
     favicons: [
       { type: "image/svg+xml", href: "/LM-icon.svg" },
@@ -41,8 +53,12 @@ const STUDIOS: Record<string, Studio | undefined> = {
     backgroundColor: "#a5855e",
     backgroundTile: kraftPaperTile,
   },
-  "Mud Matters": {
-    key: "mud-matters",
+  mudmatters: {
+    name: "Mud Matters",
+    email: "info@mudmatters.com",
+    url: "https://www.mudmatters.com",
+    galleryUrl: "https://glazegallery.mudmatters.com",
+    imagesUrl: "https://glazegalleryimages.mudmatters.com",
     logo: MMLogo,
     favicons: [
       { type: "image/svg+xml", href: "/MM-icon.svg" },
@@ -51,12 +67,22 @@ const STUDIOS: Record<string, Studio | undefined> = {
     backgroundColor: "#778378",
     backgroundTile: kraftPaperBlueTile,
   },
-};
+} satisfies Record<string, Studio>;
 
-const selected = STUDIOS[GLAZE_GALLERY_STUDIO];
-if (selected === undefined) {
+type StudioKey = keyof typeof STUDIOS;
+
+function isStudioKey(value: string): value is StudioKey {
+  return Object.hasOwn(STUDIOS, value);
+}
+
+if (!isStudioKey(GLAZE_GALLERY_STUDIO)) {
   throw new Error(`Unknown GLAZE_GALLERY_STUDIO: ${JSON.stringify(GLAZE_GALLERY_STUDIO)}`);
 }
 
+const selected: Studio = STUDIOS[GLAZE_GALLERY_STUDIO];
+
 /** Branding assets for the studio configured via the GLAZE_GALLERY_STUDIO env var. */
-export const studio = selected;
+export const studio = {
+  key: GLAZE_GALLERY_STUDIO,
+  ...selected,
+};

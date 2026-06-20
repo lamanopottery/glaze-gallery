@@ -1,8 +1,8 @@
 ---
-import { GLAZE_GALLERY_STUDIO } from "astro:env/server";
+import { studio } from "@/utils/studio";
 ---
 
 <footer class="bg-black/50 py-6 text-center text-base text-white/60">
   &copy; {new Date().getFullYear()}
-  {GLAZE_GALLERY_STUDIO}
+  {studio.name}
 </footer>

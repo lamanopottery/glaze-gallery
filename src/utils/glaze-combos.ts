@@ -1,8 +1,8 @@
-import { GLAZE_GALLERY_IMAGES_URL } from "astro:env/server";
 import glazeNames from "@/data/glaze-names.json";
 import glazeComboInfo from "@/data/glaze-combo-info.json";
 import imagesLow from "@/data/images-low.json";
 import imagesHigh from "@/data/images-high.json";
+import { studio } from "@/utils/studio";
 
 export function validGlaze(glaze: string | undefined): glaze is keyof typeof glazeNames {
   return !!glaze && glaze in glazeNames;
@@ -28,5 +28,5 @@ export function imageURL(
     return null;
   }
   const imagePrefix = (resolution === "low" ? imagesLow : imagesHigh)[imageName];
-  return `${GLAZE_GALLERY_IMAGES_URL}/${imagePrefix}/${imageName}-${resolution}.webp`;
+  return `${studio.imagesUrl}/${imagePrefix}/${imageName}-${resolution}.webp`;
 }

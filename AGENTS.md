@@ -40,7 +40,7 @@ There is no test suite.
 Google Sheet (combo metadata) + Google Drive (raw photos)
         │  download_images  (manual, glaze_gallery/_download_images.py)
         ▼
-downloads/<studio>/  →  uploaded to object storage (GLAZE_GALLERY_IMAGES_URL)
+downloads/<studio>/  →  uploaded to the studio's static images/data website
    ├─ WebP image variants            (each in its own random UUID dir)
    └─ glaze-names / glaze-combo-info / images-{high,low} JSON  (also in random UUID dirs)
         │  download_data  (auto on dev/build; manifest paths come from per-file env vars)
@@ -58,18 +58,26 @@ One codebase serves multiple pottery studios (currently "La Mano Pottery" and "M
 `download_images` produces a **separate data set per studio** (`downloads/la-mano`,
 `downloads/mud-matters`), honoring per-row `hide_la_mano` / `hide_mud_matters` flags so a combo can
 appear on one studio's site but not another's. At runtime the active studio is chosen by
-`GLAZE_GALLERY_STUDIO`, which selects branding (logo, favicons, background texture + color, and the
-`data-studio` key that drives per-studio CSS overrides in `src/styles/global.css`) in
-`src/utils/studio.ts`. Adding a studio touches **both** sides: the `STUDIOS` map in `studio.ts` (+
+`GLAZE_GALLERY_STUDIO` (`lamanopottery` or `mudmatters`). That value keys the studio metadata and
+branding (name, email, studio/gallery/images URLs, logo, favicons, background texture + color) in
+`src/utils/studio.ts` and is stamped onto `data-studio` to drive per-studio CSS overrides in
+`src/styles/global.css`. Adding a studio touches **both** sides: the `STUDIOS` map in `studio.ts` (+
 logo/texture assets and a `[data-studio="…"]` block in `global.css`) and the hardcoded per-studio
 dirs/flags/logos in `_download_images.py`.
 
 ### Image hosting & obfuscation
 
+The gallery app and its published data use separate hosts. `studio.galleryUrl` is the deployed app
+(`https://glazegallery.lamanopottery.com` or `https://glazegallery.mudmatters.com`), while
+`studio.imagesUrl` is the static website containing images and JSON manifests
+(`https://glazegalleryimages.lamanopottery.com` or
+`https://glazegalleryimages.mudmatters.com`). The Python `download_data` command mirrors the static
+host mapping because it runs before Astro and cannot import `studio.ts`.
+
 Image URLs are not predictable. Each image lives under a random UUID directory; the
 `images-low.json` / `images-high.json` manifests map a logical name (`<combo>-<front|back>`) to its
 UUID prefix. `imageURL()` in `src/utils/glaze-combos.ts` reconstructs the URL as
-`{GLAZE_GALLERY_IMAGES_URL}/{uuidPrefix}/{name}-{low|high}.webp`. The pipeline also writes a
+`{studio.imagesUrl}/{uuidPrefix}/{name}-{low|high}.webp`. The pipeline also writes a
 `robots.txt` disallowing all crawlers. `_image_processing.py` produces high (2000px) and low
 (1000px) WebP variants and paints a translucent studio logo watermark.
 
