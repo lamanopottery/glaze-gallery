@@ -19,3 +19,7 @@
   --color-clay-button: #42635e;
   --color-clay-button-hover: #4c746e;
 }
+
+[data-studio="mud-matters"] .bg-white\/20 {
+  background-color: rgb(255 255 255 / 35%);
+}

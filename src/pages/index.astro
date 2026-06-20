@@ -102,30 +102,33 @@ if (!(await isLoggedIn(Astro))) {
 </script>
 
 <Base>
-  <div class="flex max-w-4xl flex-col gap-3 self-center text-base">
-    <p>
-      Glazes can be filtered by first and second dip. Captions are in the format &ldquo;1st dip
-      (under) \ 2nd dip (over)&rdquo;. Icons indicate if the glaze combination is not food safe <IconInParentheses
-        Icon={NotFoodSafeIcon}
-      />, runny
-      <IconInParentheses Icon={RunnyIcon} />, or if the combination may blister, jump, or crawl <IconInParentheses
-        Icon={BlisterJumpCrawlIcon}
-      />.
-    </p>
-    <p>
-      <strong>Disclaimer:</strong> Results will vary based on the thickness of the glaze and the clay,
-      the structure of the piece, how the piece is dipped, etc.
-    </p>
+  <div class="relative mx-auto mt-3 w-full max-w-4xl">
+    <div
+      class="absolute top-1/2 left-0 z-10 h-[52.5%] w-[60px] -translate-x-1/2 -translate-y-1/2 rounded-sm bg-[#72b5b5]/80 md:h-[70%]"
+    >
+    </div>
+    <div class="flex flex-col gap-3 bg-white/40 py-8 pr-10 pl-[50px]">
+      <p>
+        Glazes can be filtered by first and second dip. Captions are in the format &ldquo;1st dip
+        (under) \ 2nd dip (over)&rdquo;. Icons indicate if the glaze combination is not food safe <IconInParentheses
+          Icon={NotFoodSafeIcon}
+        />, runny
+        <IconInParentheses Icon={RunnyIcon} />, or if the combination may blister, jump, or crawl <IconInParentheses
+          Icon={BlisterJumpCrawlIcon}
+        />.
+      </p>
+      <p>
+        <strong>Disclaimer:</strong> Results will vary based on the thickness of the glaze and the clay,
+        the structure of the piece, how the piece is dipped, etc.
+      </p>
+    </div>
   </div>
-  <div class="flex justify-center">
-    <hr class="border-clay/20 max-w-4xl grow" />
-  </div>
-  <div class="flex flex-col items-center justify-center gap-3 lg:flex-row">
+  <div class="mt-3 flex flex-col items-center justify-center gap-3 lg:flex-row">
     <GlazeSelect name={glaze1Key} label="1st dip (under):" />
     <div class="hidden lg:block">\</div>
     <GlazeSelect name={glaze2Key} label="2nd dip (over):" />
   </div>
-  <div class="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] items-start gap-5">
+  <div class="mt-3 grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] items-start gap-5">
     {Object.keys(glazeComboInfo).map((glazeCombo) => <GlazeTile {glazeCombo} />)}
   </div>
 </Base>
