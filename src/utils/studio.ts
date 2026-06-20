@@ -33,8 +33,8 @@ const STUDIOS: Record<string, Studio | undefined> = {
   "Mud Matters": {
     logo: MMLogo,
     favicons: [
-      { sizes: "32x32", href: "/MM-icon-32.png" },
-      { sizes: "192x192", href: "/MM-icon-192.png" },
+      { type: "image/svg+xml", href: "/MM-icon.svg" },
+      { type: "image/x-icon", href: "/MM-icon.ico" },
     ],
   },
 };
