@@ -3,12 +3,9 @@ import shutil
 from pathlib import Path
 import requests
 from dotenv import load_dotenv
+from glaze_gallery._studios import _STUDIOS
 
 _DATA_DIR = Path("src", "data")
-_IMAGES_URLS = {
-    "lamanopottery": "https://glazegalleryimages.lamanopottery.com",
-    "mudmatters": "https://glazegalleryimages.mudmatters.com",
-}
 
 
 def _download_file(images_url: str, relative_path: str, file_name: str) -> None:
@@ -19,10 +16,11 @@ def _download_file(images_url: str, relative_path: str, file_name: str) -> None:
 
 def download_data() -> None:
     load_dotenv()
-    studio = os.environ["GLAZE_GALLERY_STUDIO"]
-    images_url = _IMAGES_URLS.get(studio)
-    if images_url is None:
-        raise ValueError(f"Unknown GLAZE_GALLERY_STUDIO: {studio!r}")
+    studio_key = os.environ["GLAZE_GALLERY_STUDIO"]
+    studio = _STUDIOS.get(studio_key)
+    if studio is None:
+        raise ValueError(f"Unknown GLAZE_GALLERY_STUDIO: {studio_key!r}")
+    images_url = studio["images_url"]
 
     if _DATA_DIR.is_dir():
         shutil.rmtree(_DATA_DIR)

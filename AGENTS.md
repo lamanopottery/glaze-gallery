@@ -27,7 +27,10 @@ Python pipeline (Poetry, Python ≥ 3.11):
   automatically before every `dev`/`build`. **Overwrites `src/data/`**, so don't hand-edit it.
 - `poetry run download_images` — the heavy pipeline: reads the Google Sheet, downloads images from
   Drive, resizes/watermarks them, and writes per-studio output to `downloads/`. Run manually when
-  the source data changes; requires Google OAuth (`credentials.json` → `token.json`).
+  the source data changes; requires Google OAuth (`credentials.json` → browser authorization →
+  `token.json`). If it fails with `google.auth.exceptions.RefreshError: invalid_grant`, delete the
+  expired or revoked token with `rm token.json`, then rerun the command to
+  authorize again. Keep `credentials.json`; only `token.json` should be regenerated.
 - `poetry run mypy glaze_gallery` — typecheck.
 
 There is no test suite.

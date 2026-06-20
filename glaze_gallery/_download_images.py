@@ -10,15 +10,11 @@ from PIL import Image
 from glaze_gallery._random_dirs import create_random_dir
 from glaze_gallery._google_api import GoogleDrive
 from glaze_gallery._image_processing import Images, load_logo_image
+from glaze_gallery._studios import _STUDIOS
 
 _T = TypeVar("_T", bool, str)
 
 _DOWNLOADS_DIR = Path("downloads")
-_LA_MANO_DOWNLOADS_DIR = _DOWNLOADS_DIR / "la-mano"
-_MUD_MATTERS_DOWNLOADS_DIR = _DOWNLOADS_DIR / "mud-matters"
-_ASSETS_DIR = Path(__file__).resolve().parent.parent / "src" / "assets"
-_LA_MANO_LOGO = _ASSETS_DIR / "LM-logo.svg"
-_MUD_MATTERS_LOGO = _ASSETS_DIR / "MM-logo.svg"
 
 
 @dataclass
@@ -83,16 +79,21 @@ class GlazeData:
         front_images: Images,
         back_images: Images | None,
         logo_im: Image.Image,
+        logo_color: str,
     ) -> None:
         self.names[combo.glaze1_formatted] = combo.glaze1
         self.names[combo.glaze2_formatted] = combo.glaze2
         self.combo_info[combo.glaze_combo] = combo.info
 
-        front_image_paths = front_images.save(self.downloads_dir, logo_im)
+        front_image_paths = front_images.save(
+            self.downloads_dir, logo_im, logo_color
+        )
         self.images_high[combo.front_name_base] = front_image_paths.high.dir_name
         self.images_low[combo.front_name_base] = front_image_paths.low.dir_name
         if back_images:
-            back_image_paths = back_images.save(self.downloads_dir, logo_im)
+            back_image_paths = back_images.save(
+                self.downloads_dir, logo_im, logo_color
+            )
             self.images_high[combo.back_name_base] = back_image_paths.high.dir_name
             self.images_low[combo.back_name_base] = back_image_paths.low.dir_name
 
@@ -120,8 +121,10 @@ def _get_value(
 def download_images() -> None:
     load_dotenv()
 
-    la_mano_logo = load_logo_image(_LA_MANO_LOGO)
-    mud_matters_logo = load_logo_image(_MUD_MATTERS_LOGO)
+    logos = {
+        studio_key: load_logo_image(studio["logo_path"])
+        for studio_key, studio in _STUDIOS.items()
+    }
 
     google_drive = GoogleDrive()
     glaze_data = google_drive.get_glaze_data()
@@ -129,17 +132,21 @@ def download_images() -> None:
     if _DOWNLOADS_DIR.is_dir():
         shutil.rmtree(_DOWNLOADS_DIR)
     _DOWNLOADS_DIR.mkdir()
-    _LA_MANO_DOWNLOADS_DIR.mkdir()
-    _MUD_MATTERS_DOWNLOADS_DIR.mkdir()
+    for studio in _STUDIOS.values():
+        studio["downloads_dir"].mkdir()
     filtered_glaze_data = glaze_data[glaze_data["front_image"].astype(bool)]
-    la_mano_glaze_data = GlazeData(_LA_MANO_DOWNLOADS_DIR)
-    mud_matters_glaze_data = GlazeData(_MUD_MATTERS_DOWNLOADS_DIR)
+    studio_glaze_data = {
+        studio_key: GlazeData(studio["downloads_dir"])
+        for studio_key, studio in _STUDIOS.items()
+    }
     for i in tqdm(range(len(filtered_glaze_data))):
         image_data = filtered_glaze_data.iloc[i]
-        hide_la_mano = _get_value(image_data, "hide_la_mano", bool)
-        hide_mud_matters = _get_value(image_data, "hide_mud_matters", bool)
+        hidden = {
+            studio_key: _get_value(image_data, studio["hide_column"], bool)
+            for studio_key, studio in _STUDIOS.items()
+        }
 
-        if hide_la_mano and hide_mud_matters:
+        if all(hidden.values()):
             continue
 
         front_file_id = _get_value(image_data, "front_file_id", str)
@@ -164,14 +171,15 @@ def download_images() -> None:
                 file_name_base=combo.back_name_base,
             )
 
-        if not hide_la_mano:
-            la_mano_glaze_data.save_images_and_update(
-                combo, front_images, back_images, la_mano_logo
-            )
-        if not hide_mud_matters:
-            mud_matters_glaze_data.save_images_and_update(
-                combo, front_images, back_images, mud_matters_logo
-            )
+        for studio_key, studio in _STUDIOS.items():
+            if not hidden[studio_key]:
+                studio_glaze_data[studio_key].save_images_and_update(
+                    combo,
+                    front_images,
+                    back_images,
+                    logos[studio_key],
+                    studio["logo_color"],
+                )
 
-    la_mano_glaze_data.save()
-    mud_matters_glaze_data.save()
+    for glaze_data_for_studio in studio_glaze_data.values():
+        glaze_data_for_studio.save()

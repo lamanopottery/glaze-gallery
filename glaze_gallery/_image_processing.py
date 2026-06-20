@@ -43,7 +43,7 @@ class Images:
     _LOGO_SCALE = 0.2
     _LOGO_OFFSET_X = 0.03
     _LOGO_OFFSET_Y = 0.03
-    _LOGO_ALPHA = 0.15
+    _LOGO_ALPHA = 0.25
 
     def __init__(self, image_bytes: io.BytesIO, file_name_base: str) -> None:
         self.im = Image.open(image_bytes)
@@ -57,17 +57,19 @@ class Images:
         self.im_low.thumbnail(self._LOW_DIMS)
         self.file_name_low = f"{file_name_base}-low.webp"
 
-    def save(self, downloads_dir: Path, logo_im: Image.Image) -> ImagePaths:
+    def save(
+        self, downloads_dir: Path, logo_im: Image.Image, logo_color: str
+    ) -> ImagePaths:
         image_paths = ImagePaths(self.file_name_high, self.file_name_low, downloads_dir)
         im_high = self.im_high.copy()
-        self.add_logo(im_high, logo_im)
+        self.add_logo(im_high, logo_im, logo_color)
         im_high.save(image_paths.high.path)
         im_low = self.im_low.copy()
-        self.add_logo(im_low, logo_im)
+        self.add_logo(im_low, logo_im, logo_color)
         im_low.save(image_paths.low.path)
         return image_paths
 
-    def add_logo(self, im: Image.Image, logo_im: Image.Image) -> None:
+    def add_logo(self, im: Image.Image, logo_im: Image.Image, logo_color: str) -> None:
         logo_w = im.size[0] * self._LOGO_SCALE
         logo_h = logo_im.size[1] * logo_w / logo_im.size[0]
         logo_im_scaled = logo_im.copy()
@@ -75,7 +77,7 @@ class Images:
         alpha_array = np.array(logo_im_scaled.split()[-1])
         mask = Image.fromarray((alpha_array * self._LOGO_ALPHA).astype(np.uint8))
         im.paste(
-            Image.new("RGB", logo_im_scaled.size),
+            Image.new("RGB", logo_im_scaled.size, logo_color),
             (
                 round(im.size[0] * (1 - self._LOGO_OFFSET_X) - logo_w),
                 round(im.size[1] * (1 - self._LOGO_OFFSET_Y) - logo_h),
